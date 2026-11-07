@@ -96,7 +96,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:15px}
 <main id="main"></main>
 <dialog id="dlg"><div class="dhead"><h3 id="dlgTitle"></h3></div><div class="dbody" id="dlgBody"></div><div class="dfoot" id="dlgFoot"></div></dialog>
 <div class="toast" id="toast"></div>
-<script src="blue-bonnet-kit.js"></script>
+<script src="/Blue-Bonnet-LLM/blue-bonnet-kit.js"></script>
 <script>
 /* ---------- constants ---------- */
 const BRANDS = {
@@ -639,7 +639,7 @@ function vData(m){
     <p class="muted small">Off by default so it doesn't show up when you're working ADV or Valencia Brown in front of someone.</p></div>
   <div class="card"><h3>Blue Bonnet's memory</h3>
     <label style="display:flex;gap:10px;align-items:center;color:var(--ink);font-size:16px"><input type="checkbox" id="bmT" ${S.settings.shareBlueMem!==false?"checked":""} style="width:auto"> Let Blue use what she already knows about you, and remember mentoring talks</label>
-    <p class="muted small">${(()=>{const bm=blueMemory(); return kitReady()?(bm?"Connected to Blue Bonnet's memory ("+(bm.key.endsWith("beta")?"beta":"main app")+"). "+bm.facts.length+" things she knows are in reach.":"Running on Blue Bonnet. No memory found on this device yet. Open the Blue Bonnet beta here once."):"Shared memory works when Clienting runs from your GitHub Pages site next to the Blue Bonnet beta.";})()} Role-play sessions are never remembered.</p></div>
+    <p class="muted small">${(()=>{const bm=blueMemory(); return kitReady()?(bm?"Connected to Blue Bonnet's memory ("+(bm.key.endsWith("beta")?"beta":"main app")+"). "+bm.facts.length+" things she knows are in reach.":"Running on Blue Bonnet. No memory found on this device yet. Open the Blue Bonnet beta here once."):"Shared memory works when Clienting runs from your GitHub Pages site (dustin12342986-hue.github.io).";})()} Role-play sessions are never remembered.</p></div>
   <div class="card"><h3>Where your data lives</h3><p class="muted"><span id="syncNote">${esc(syncText)}</span>. On claude.ai it saves privately to your account. On GitHub Pages it saves in this browser, so use Copy backup to move it between devices.</p></div>
   <div class="card"><h3>Backup</h3><div class="row"><button class="btn" id="cp">Copy backup</button></div>
     <label>Restore from a backup (paste it here)</label><textarea id="imp"></textarea><div class="row" style="margin-top:8px"><button class="btn" id="impB">Restore</button></div></div>`;
