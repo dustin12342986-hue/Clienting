@@ -3,99 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5b5bb5">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <title>Clienting</title>
 <style>
-:root{
-  --bg:#F6F6F3; --card:#FFFFFF; --ink:#1E2126; --muted:#62666E; --line:#E2E2DC;
-  --accent:#2E3C87; --accent-soft:#E7EAF6; --amber:#B7791F; --amber-soft:#FBF1DF;
-  --radius:14px;
+:root {
+  /* Status colors are intentionally theme-independent — a green/red light
+     needs to mean the same thing no matter which palette is active. This is
+     what powers the Dashboard's "green light / red light" board. */
+  --done: #2fa06a;
+  --done-bg: #e7f6ee;
+  --partial: #d99a1f;
+  --partial-bg: #fdf3e0;
+  --none: #9aa0b8;
+  --none-bg: #eef0f6;
+  --attention: #e0554f;
+  --attention-bg: #fdecec;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 1px 2px rgba(20, 24, 50, 0.04), 0 4px 14px rgba(20, 24, 50, 0.05);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+
+  --accent-h: 18; /* used by the "custom" theme; overridden inline by JS */
 }
-[data-theme="dark"]{
-  --bg:#15171B; --card:#1D2025; --ink:#E9EAEC; --muted:#A0A4AC; --line:#2D3138;
-  --accent:#8B9AE8; --accent-soft:#252B45; --amber:#E0A84E; --amber-soft:#3A2F1C;
+
+/* ==========================================================================
+   Themes — Sunset is the default. Mono Light / Mono Dark / Custom (pick any
+   single hue and the whole UI is shades of it) are opt-in from Settings.
+   ========================================================================== */
+
+html[data-theme="sunset"] {
+  --bg: #fff6f0;
+  --surface: #ffffff;
+  --surface-2: #ffeee3;
+  --text: #4a3b45;
+  --muted: #9c8791;
+  --border: #f5dfe0;
+  --primary: #ff8b6b;
+  --primary-dark: #e96c4c;
+  --on-primary: #ffffff;
+  --accent-pink: #f6a6c1;
+  --accent-blue: #7fb7d6;
+  --accent-yellow: #ffd873;
+  --hero-sky-top: #7fb7d6;
+  --hero-sky-mid: #f6a6c1;
+  --hero-sky-bottom: #ffd873;
+  --hero-sun: #ffb199;
+  --hero-sun-core: #ffdd8a;
+  --hero-ocean: #5b9bb8;
+  --hero-ocean-dark: #4a86a3;
+  --hero-foam: #fff7ee;
+  --hero-cloud: #ffffff;
+  --hero-palm: #6a5a63;
 }
+
+html[data-theme="hill-country"] {
+  --bg: #fbf7f1;
+  --surface: #ffffff;
+  --surface-2: #f1edf8;
+  --text: #2f2a3d;
+  --muted: #857d93;
+  --border: #ebe4ee;
+  --primary: #5b5bb5;
+  --primary-dark: #45449a;
+  --on-primary: #ffffff;
+  --hero-sky-top: #b7b2e2;
+  --hero-sky-mid: #f2c3b3;
+  --hero-sky-bottom: #ffe0a6;
+  --hero-sun: #ffc98a;
+  --hero-sun-core: #ffe7ab;
+  --hill-far: #b3c1a6;
+  --hill-mid: #8fa98a;
+  --hill-near: #6e8e6b;
+  --flower: #5b5bb5;
+  --flower-tip: #f4f3ff;
+  --tree: #4c4752;
+  --fence: #8c7a69;
+  --hero-cloud: #ffffff;
+}
+
+html[data-theme="mono-light"] {
+  --hill-far: #dcdcdc; --hill-mid: #c6c6c6; --hill-near: #adadad; --flower: #6c6c6c; --flower-tip: #ffffff; --tree: #8a8a8a; --fence: #9a9a9a;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #efefef;
+  --text: #1a1a1a;
+  --muted: #6c6c6c;
+  --border: #e2e2e2;
+  --primary: #2b2b2b;
+  --primary-dark: #000000;
+  --on-primary: #ffffff;
+  --accent-pink: #d8d8d8;
+  --accent-blue: #bdbdbd;
+  --accent-yellow: #e6e6e6;
+  --hero-sky-top: #d9d9d9;
+  --hero-sky-mid: #ececec;
+  --hero-sky-bottom: #f5f5f5;
+  --hero-sun: #cfcfcf;
+  --hero-sun-core: #e9e9e9;
+  --hero-ocean: #bcbcbc;
+  --hero-ocean-dark: #a3a3a3;
+  --hero-foam: #ffffff;
+  --hero-cloud: #ffffff;
+  --hero-palm: #8a8a8a;
+}
+
+html[data-theme="mono-dark"] {
+  --hill-far: #2e2e33; --hill-mid: #26262a; --hill-near: #1d1d20; --flower: #8a8a92; --flower-tip: #c9c9cf; --tree: #45454b; --fence: #4f4f55;
+  --bg: #121214;
+  --surface: #1c1c1f;
+  --surface-2: #26262a;
+  --text: #f2f2f2;
+  --muted: #9a9aa0;
+  --border: #333338;
+  --primary: #f2f2f2;
+  --primary-dark: #ffffff;
+  --on-primary: #121214;
+  --accent-pink: #3a3a40;
+  --accent-blue: #2c2c31;
+  --accent-yellow: #454549;
+  --hero-sky-top: #1a1a1e;
+  --hero-sky-mid: #2b2b30;
+  --hero-sky-bottom: #3d3d42;
+  --hero-sun: #6e6e74;
+  --hero-sun-core: #9a9aa0;
+  --hero-ocean: #232327;
+  --hero-ocean-dark: #17171a;
+  --hero-foam: #4a4a50;
+  --hero-cloud: #3a3a40;
+  --hero-palm: #55555a;
+}
+
+html[data-theme="custom"] {
+  --hill-far: hsl(calc(var(--accent-h) + 60) 22% 72%); --hill-mid: hsl(calc(var(--accent-h) + 60) 22% 60%); --hill-near: hsl(calc(var(--accent-h) + 60) 22% 48%); --flower: hsl(var(--accent-h) 60% 52%); --flower-tip: #ffffff; --tree: hsl(var(--accent-h) 15% 30%); --fence: hsl(var(--accent-h) 20% 45%);
+  --bg: hsl(var(--accent-h) 45% 97%);
+  --surface: #ffffff;
+  --surface-2: hsl(var(--accent-h) 45% 93%);
+  --text: hsl(var(--accent-h) 30% 18%);
+  --muted: hsl(var(--accent-h) 15% 45%);
+  --border: hsl(var(--accent-h) 40% 89%);
+  --primary: hsl(var(--accent-h) 70% 55%);
+  --primary-dark: hsl(var(--accent-h) 70% 42%);
+  --on-primary: #ffffff;
+  --accent-pink: hsl(var(--accent-h) 60% 80%);
+  --accent-blue: hsl(var(--accent-h) 50% 70%);
+  --accent-yellow: hsl(var(--accent-h) 65% 75%);
+  --hero-sky-top: hsl(var(--accent-h) 55% 75%);
+  --hero-sky-mid: hsl(var(--accent-h) 65% 68%);
+  --hero-sky-bottom: hsl(var(--accent-h) 75% 62%);
+  --hero-sun: hsl(var(--accent-h) 80% 72%);
+  --hero-sun-core: hsl(var(--accent-h) 85% 85%);
+  --hero-ocean: hsl(var(--accent-h) 45% 50%);
+  --hero-ocean-dark: hsl(var(--accent-h) 45% 40%);
+  --hero-foam: #ffffff;
+  --hero-cloud: #ffffff;
+  --hero-palm: hsl(var(--accent-h) 30% 35%);
+}
+
+
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-.bar{max-width:860px;margin:0 auto;padding:14px 18px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-weight:700;font-size:21px;letter-spacing:.2px}
-.brand small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
-.spacer{flex:1}
-select,input,textarea,button{font:inherit;color:inherit}
-select,input[type=text],input[type=date],input[type=number],textarea{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+a{color:var(--primary-dark)}
+html[data-theme="mono-dark"] a{color:var(--text)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+select,input[type=text],input[type=date],input[type=number],textarea{padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);width:100%}
 textarea{min-height:84px;resize:vertical}
-.mini{width:auto;font-size:15px;padding:6px 9px}
-nav{max-width:860px;margin:0 auto;padding:8px 12px 0;display:flex;gap:2px;overflow-x:auto}
-nav a{padding:10px 14px;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;font-size:16px}
-nav a.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
-main{max-width:860px;margin:0 auto;padding:18px 18px 80px}
-h2{font-size:22px;margin:6px 0 12px}
-h3{font-size:18px;margin:0 0 6px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
-.muted{color:var(--muted)}
-.small{font-size:14px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input[type=range]{accent-color:var(--primary)}
+input[type=checkbox]{accent-color:var(--primary);width:20px;height:20px}
+.mini{width:auto;font-size:14px;padding:6px 9px}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 4px}
+
+/* shell, same as Adulting */
+#appShell{display:flex;flex-direction:column;min-height:100vh}
+#app{display:flex;flex:1;min-height:0}
+.hero-banner{width:100%;display:block;line-height:0;background:var(--hero-sky-bottom)}
+.hero-banner svg{width:100%;height:100%;display:block}
+.hero-banner-inner{position:relative;height:128px}
+@media (max-width:820px){.hero-banner-inner{height:88px}}
+.logo-mark{display:inline-flex;flex-shrink:0}.logo-mark svg{display:block}
+.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:20px 12px;display:flex;flex-direction:column;gap:4px}
+.sb-brand{padding:6px 4px 14px;display:flex;align-items:center;gap:10px}
+.brand-title{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:700;color:var(--text);line-height:1.15}
+.brand-sub{font-size:12px;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--text);background:transparent;text-align:left;font-weight:600;font-size:14.5px;text-decoration:none;border:none}
+.nav-item:hover{background:var(--surface-2)}
+.nav-item.on{background:var(--surface-2);color:var(--primary-dark);box-shadow:inset 3px 0 0 var(--primary)}
+html[data-theme="mono-dark"] .nav-item.on{color:var(--text)}
+.sb-foot{margin-top:auto;padding-top:12px}
+.sb-foot select{font-size:13px;padding:7px 9px}
+main{flex:1;padding:28px 32px 80px;max-width:1000px;min-width:0}
+@media (max-width:820px){#app{flex-direction:column}.sidebar{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);padding:10px;align-items:center}.sb-brand{padding:0 8px 0 0}.sb-brand .brand-sub{display:none}.sb-foot{margin:0 0 0 8px;padding:0}.sb-foot .ver{display:none}main{padding:20px}}
+h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:28px;letter-spacing:-.01em;margin:0 0 6px}
+.card h3{font-family:"Fraunces",Georgia,serif;font-size:17.5px;font-weight:600}
+h3{font-size:16px;margin:0 0 8px;font-weight:700}
+.page-sub{color:var(--muted);margin:0 0 22px}
+
+/* cards, buttons, pills */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 1px 2px rgba(40,30,60,.04),0 6px 18px rgba(60,50,110,.06);padding:20px;margin-bottom:16px}
+.muted{color:var(--muted)}.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.spacer{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:620px){.grid2{grid-template-columns:1fr}}
-label{display:block;font-size:14px;color:var(--muted);margin:10px 0 4px}
-.btn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-[data-theme="dark"] .btn.primary{color:#14182E}
-.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
-.pill{display:inline-block;font-size:13px;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
-.pill.amber{background:var(--amber-soft)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-right:6px;vertical-align:middle}
-.list .item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.btn{cursor:pointer;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-weight:600;background:var(--surface-2);color:var(--text);transition:background .15s ease;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(.97)}
+.btn.primary{background:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-dark);filter:none}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.mini{padding:6px 10px;font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.none{background:var(--none-bg);color:var(--muted)}
+.pill.partial,.pill.amber{background:var(--partial-bg);color:var(--partial)}
+.pill.done{background:var(--done-bg);color:var(--done)}
+html[data-theme="mono-dark"] .pill.none{background:var(--surface-2)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--partial);margin-right:6px;vertical-align:middle}
+.list .item{display:flex;gap:12px;align-items:center;padding:12px 4px;border-top:1px solid var(--border)}
 .list .item:first-child{border-top:none}
 .item .grow{flex:1;min-width:0}
-.clickable{cursor:pointer}
-.lesson-body p{margin:8px 0}
-.lesson-body ul{margin:6px 0 6px 20px;padding:0}
-.quote{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:var(--accent-soft);border-radius:0 10px 10px 0}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.seg button{border:none;background:var(--card);padding:6px 12px;cursor:pointer;font-size:14px;color:var(--muted)}
-.seg button.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.clickable{cursor:pointer}.clickable:hover{background:var(--surface-2);border-radius:var(--radius-sm)}
+.card.clickable:hover{background:var(--surface)}
+.lesson-body p{margin:8px 0}.lesson-body ul{margin:6px 0 6px 20px;padding:0}
+.quote{border-left:4px solid var(--primary);padding:10px 14px;margin:10px 0;background:var(--surface-2);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:var(--radius-sm);padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:none;background:transparent;padding:7px 12px;cursor:pointer;font-size:14px;font-weight:600;color:var(--muted);border-radius:7px}
+.seg button.on{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.reassure{display:flex;align-items:center;gap:12px;background:var(--done-bg);color:#1c6b48;border:1px solid #bfe6d3;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-weight:600}
+html[data-theme="mono-dark"] .reassure{background:var(--surface-2);color:var(--text);border-color:var(--border)}
+.section-title{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 8px}
+.progress-bar{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.progress-bar>div{height:100%;background:var(--primary);border-radius:999px}
+
+/* chat */
 .chat{display:flex;flex-direction:column;gap:10px;max-height:56vh;overflow:auto;padding:4px}
-.msg{padding:10px 13px;border-radius:12px;max-width:88%;white-space:pre-wrap}
-.msg.me{align-self:flex-end;background:var(--accent-soft)}
-.msg.blue{align-self:flex-start;background:var(--card);border:1px solid var(--line)}
-.msg .who{font-size:12px;color:var(--muted);display:block;margin-bottom:2px}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:0;width:min(620px,94vw)}
-dialog::backdrop{background:rgba(0,0,0,.35)}
-dialog .dhead{padding:16px 18px 0}
-dialog .dbody{padding:4px 18px 10px;max-height:70vh;overflow:auto}
-dialog .dfoot{padding:12px 18px 16px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--line)}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+.msg{padding:10px 14px;border-radius:14px;max-width:88%;white-space:pre-wrap}
+.msg.me{align-self:flex-end;background:var(--primary);color:var(--on-primary);border-radius:16px 16px 4px 16px}
+.msg.me .who{color:inherit;opacity:.8}
+.msg.blue{align-self:flex-start;background:var(--surface-2);border-radius:14px 14px 14px 4px}
+.msg .who{font-size:12px;color:var(--muted);display:block;margin-bottom:2px;font-weight:600}
+.bb{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:17px}
+
+/* dialog styled like Adulting's modal */
+dialog{border:none;border-radius:var(--radius);background:var(--surface);color:var(--text);padding:0;width:min(560px,94vw);box-shadow:0 10px 40px rgba(20,20,40,.25)}
+dialog::backdrop{background:rgba(20,22,40,.4)}
+dialog .dhead{padding:22px 24px 0}
+dialog .dbody{padding:4px 24px 12px;max-height:70vh;overflow:auto}
+dialog .dfoot{padding:12px 24px 20px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;z-index:60;box-shadow:var(--shadow);opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
 .sync{font-size:12px;color:var(--muted)}
 .empty{color:var(--muted);padding:8px 0}
-.bb{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent)}
 details summary{cursor:pointer;color:var(--muted);font-size:15px}
-a{color:var(--accent)}
+
+/* settings pickers, same as Adulting */
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:10px 0}
+.theme-swatch{border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px;text-align:center;background:var(--surface);font-weight:700;font-size:12.5px;cursor:pointer;color:var(--text)}
+.theme-swatch.active{border-color:var(--primary)}
+.theme-swatch .preview{height:34px;border-radius:7px;margin-bottom:8px}
+.theme-swatch .preview.sunset{background:linear-gradient(135deg,#7fb7d6,#f6a6c1 50%,#ffd873)}
+.theme-swatch .preview.hill-country{background:linear-gradient(180deg,#b7b2e2,#f2c3b3 45%,#ffe0a6 62%,#8fa98a 63%,#5b5bb5 100%)}
+.theme-swatch .preview.mono-light{background:linear-gradient(135deg,#fafafa,#d9d9d9);border:1px solid #ddd}
+.theme-swatch .preview.mono-dark{background:linear-gradient(135deg,#3d3d42,#121214)}
+.theme-swatch .preview.custom{background:linear-gradient(135deg,hsl(var(--accent-h) 55% 75%),hsl(var(--accent-h) 75% 45%))}
+.icon-style-grid{display:flex;gap:10px}
+.icon-style-option{flex:1;border:2px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;background:var(--surface);cursor:pointer;font-weight:700;font-size:13px;color:var(--text)}
+.icon-style-option.active{border-color:var(--primary)}
+.icon-style-option .sample{font-size:22px;margin-bottom:6px}
+
 </style>
 </head>
 <body>
-<header>
-  <div class="bar">
-    <div class="brand">Clienting<small>Find clients. Keep them. Get better at it.</small></div>
-    <div class="spacer"></div>
-    <select id="brandFilter" class="mini" aria-label="Business"></select>
-    <select id="themeSel" class="mini" aria-label="Theme">
-      <option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option>
-    </select>
+<div id="appShell">
+  <header class="hero-banner" id="heroBanner" aria-hidden="true"></header>
+  <div id="app">
+    <nav class="sidebar" id="sidebar"></nav>
+    <main id="main"></main>
   </div>
-  <nav id="nav">
-    <a href="#today" data-v="today">Today</a>
-    <a href="#people" data-v="people">People</a>
-    <a href="#learn" data-v="learn">Learn</a>
-    <a href="#practice" data-v="practice">Practice</a>
-    <a href="#blue" data-v="blue">Blue Bonnet</a>
-    <a href="#library" data-v="library">Library</a>
-    <a href="#data" data-v="data">Data</a>
-  </nav>
-</header>
-<main id="main"></main>
+</div>
 <dialog id="dlg"><div class="dhead"><h3 id="dlgTitle"></h3></div><div class="dbody" id="dlgBody"></div><div class="dfoot" id="dlgFoot"></div></dialog>
 <div class="toast" id="toast"></div>
 <script src="/Blue-Bonnet-LLM/blue-bonnet-kit.js"></script>
@@ -261,7 +447,7 @@ const QBANK = {
 
 /* ---------- state + storage ---------- */
 const LS_KEY = "clienting.v1";
-const blank = () => ({people:[], inbox:[], lessons:{}, drills:{}, notes:"", settings:{theme:"auto", brand:"all", showTerc:false, shareBlueMem:true}, updated:0});
+const blank = () => ({people:[], inbox:[], lessons:{}, drills:{}, notes:"", settings:{theme:"hill-country", customHue:250, iconStyle:"colorful", matchAdulting:true, brand:"all", showTerc:false, shareBlueMem:true}, updated:0});
 let S = blank();
 let db=null, uid=null, docRef=null, remoteOK=false;
 let saveTimer=null, writing=false, pending=false;
@@ -311,29 +497,90 @@ const today=()=>new Date().toISOString().slice(0,10);
 const daysSince=d=>d?Math.floor((Date.now()-new Date(d+"T12:00:00").getTime())/86400000):null;
 const fmtDate=d=>d?new Date(d+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}):"";
 function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1600); }
+function stClass(st){ return st==="done"?"done":st==="in progress"?"partial":"none"; }
 function stageName(id){ return (STAGES.find(s=>s.id===id)||{}).name||id; }
 function brandOK(b){ if(b==="terc" && !S.settings.showTerc) return false; return S.settings.brand==="all"||S.settings.brand===b; }
 function visiblePeople(){ return S.people.filter(p=>brandOK(p.brand)); }
 function lastTouch(p){ return p.touches&&p.touches.length? p.touches[0].d : null; }
 function readyForTouch(p){ const d=daysSince(lastTouch(p)); return d===null || d>=Number(p.cadence||30); }
 
-/* ---------- theme + brand filter ---------- */
-function applyTheme(){
-  const t=S.settings.theme; let mode=t;
-  if(t==="auto") mode = matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
-  document.documentElement.setAttribute("data-theme",mode);
-  $("#themeSel").value=t;
+/* ---------- theme, icons, sidebar (same system as Adulting and Businessing) ---------- */
+const APP_VERSION="2026.11.07a";
+const THEMES=[["hill-country","Hill Country"],["mono-light","Mono light"],["mono-dark","Mono dark"],["custom","Custom"]];
+function adultingLook(){
+  try{ const a=JSON.parse(localStorage.getItem("adulting-state-v1")||"null"); const st=a&&a.settings; if(!st) return null;
+    return {theme:st.theme||"sunset", customHue:st.customHue!=null?st.customHue:18, iconStyle:st.iconStyle||"colorful", adultingTheme:st.theme||"sunset"}; }catch(e){ return null; }
 }
-function fillBrandFilter(){
-  const sel=$("#brandFilter"); const opts=[["all","All businesses"],["adv","ADV Media"],["vb","Valencia Brown"]];
+function look(){
+  const set=S.settings;
+  // Family rule: follow Adulting's light/dark/custom choice, but where Adulting
+  // shows its signature Sunset, Clienting shows its own signature, Hill Country.
+  if(set.matchAdulting!==false){ const a=adultingLook(); if(a) return Object.assign({},a,{theme:a.theme==="sunset"?"hill-country":a.theme}); }
+  const t=THEMES.some(x=>x[0]===set.theme)?set.theme:"hill-country";
+  return {theme:t, customHue:set.customHue!=null?set.customHue:18, iconStyle:set.iconStyle||"colorful"};
+}
+function applyTheme(){
+  const L=look();
+  document.documentElement.dataset.theme=L.theme;
+  document.documentElement.style.setProperty("--accent-h",L.customHue);
+  const b=document.getElementById("heroBanner"); if(b) b.innerHTML=heroBannerMarkup();
+}
+function heroBannerMarkup(){
+  // Texas Hill Country at golden hour: rolling hills, a live oak, a fence line,
+  // and a field of bluebonnets. Colors come from CSS variables so it re-tints with the theme.
+  return '<div class="hero-banner-inner"><svg viewBox="0 64 1200 146" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">'+
+  '<defs><linearGradient id="hcSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" style="stop-color:var(--hero-sky-top)"/><stop offset="60%" style="stop-color:var(--hero-sky-mid)"/><stop offset="100%" style="stop-color:var(--hero-sky-bottom)"/></linearGradient></defs>'+
+  '<rect x="0" y="60" width="1200" height="150" fill="url(#hcSky)"/>'+
+  '<circle cx="905" cy="118" r="58" style="fill:var(--hero-sun)" opacity="0.45"/><circle cx="905" cy="118" r="34" style="fill:var(--hero-sun-core)"/>'+
+  '<ellipse cx="430" cy="92" rx="60" ry="11" style="fill:var(--hero-cloud)" opacity="0.55"/><ellipse cx="472" cy="87" rx="32" ry="8" style="fill:var(--hero-cloud)" opacity="0.55"/><ellipse cx="660" cy="84" rx="44" ry="8" style="fill:var(--hero-cloud)" opacity="0.4"/>'+
+  '<path d="M0 132 C140 108 260 120 380 126 S640 104 780 118 S1040 112 1200 122 V210 H0 Z" style="fill:var(--hill-far)"/>'+
+  '<path d="M0 152 C160 130 300 146 450 144 S720 128 860 140 S1080 136 1200 146 V210 H0 Z" style="fill:var(--hill-mid)"/>'+
+  '<g><path d="M228 160 L231 120 L236 120 L238 160 Z" style="fill:var(--tree)"/>'+
+  '<ellipse cx="233" cy="112" rx="48" ry="20" style="fill:var(--tree)"/><ellipse cx="205" cy="118" rx="26" ry="13" style="fill:var(--tree)"/><ellipse cx="262" cy="117" rx="28" ry="13" style="fill:var(--tree)"/></g>'+
+  '<path d="M700 156 L1130 150" style="stroke:var(--fence);stroke-width:2.5"/><path d="M700 165 L1130 159" style="stroke:var(--fence);stroke-width:2.5"/>'+
+  '<rect x="700" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="748" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="796" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="844" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="892" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="940" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="988" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="1036" y="150" width="4" height="22" style="fill:var(--fence)"/><rect x="1084" y="150" width="4" height="22" style="fill:var(--fence)"/>'+
+  '<path d="M0 172 C180 158 340 170 520 166 S860 156 1000 164 S1140 162 1200 166 V210 H0 Z" style="fill:var(--hill-near)"/>'+
+  '<ellipse cx="388.6" cy="175.4" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="388.6" cy="172.4" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="86.9" cy="189.3" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="86.9" cy="186.0" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="69.6" cy="188.3" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="69.6" cy="185.6" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="520.4" cy="172.5" rx="1.3" ry="2.8" style="fill:var(--flower)"/><circle cx="520.4" cy="170.4" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="509.4" cy="199.8" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="509.4" cy="196.5" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="267.9" cy="192.6" rx="2.9" ry="6.1" style="fill:var(--flower)"/><circle cx="267.9" cy="188.1" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="692.5" cy="184.3" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="692.5" cy="180.3" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="55.9" cy="200.9" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="55.9" cy="197.2" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="173.1" cy="174.2" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="173.1" cy="171.8" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="979.4" cy="176.5" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="979.4" cy="173.5" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="766.7" cy="183.4" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="766.7" cy="180.1" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="75.3" cy="172.1" rx="1.4" ry="3.0" style="fill:var(--flower)"/><circle cx="75.3" cy="169.9" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="816.5" cy="185.4" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="816.5" cy="182.4" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="702.7" cy="186.3" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="702.7" cy="183.2" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="953.3" cy="195.2" rx="2.2" ry="4.7" style="fill:var(--flower)"/><circle cx="953.3" cy="191.8" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="689.3" cy="188.9" rx="2.7" ry="5.7" style="fill:var(--flower)"/><circle cx="689.3" cy="184.7" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="875.3" cy="180.4" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="875.3" cy="176.7" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="141.7" cy="185.1" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="141.7" cy="181.4" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="182.4" cy="187.6" rx="1.7" ry="3.6" style="fill:var(--flower)"/><circle cx="182.4" cy="185.0" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="801.9" cy="197.5" rx="2.6" ry="5.6" style="fill:var(--flower)"/><circle cx="801.9" cy="193.4" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="1050.6" cy="181.3" rx="2.2" ry="4.7" style="fill:var(--flower)"/><circle cx="1050.6" cy="177.9" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="713.2" cy="190.9" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="713.2" cy="187.4" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="1008.0" cy="204.0" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="1008.0" cy="199.7" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="797.0" cy="172.2" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="797.0" cy="169.3" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="776.6" cy="205.8" rx="3.2" ry="6.9" style="fill:var(--flower)"/><circle cx="776.6" cy="200.7" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="341.5" cy="183.9" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="341.5" cy="180.4" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="27.1" cy="186.6" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="27.1" cy="183.7" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="140.5" cy="172.1" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="140.5" cy="169.1" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="155.2" cy="178.9" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="155.2" cy="176.0" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="1045.7" cy="172.9" rx="1.7" ry="3.6" style="fill:var(--flower)"/><circle cx="1045.7" cy="170.3" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="659.3" cy="201.8" rx="3.1" ry="6.6" style="fill:var(--flower)"/><circle cx="659.3" cy="197.0" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="1036.8" cy="180.0" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="1036.8" cy="177.1" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="430.5" cy="201.8" rx="3.3" ry="7.1" style="fill:var(--flower)"/><circle cx="430.5" cy="196.6" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="181.1" cy="176.3" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="181.1" cy="173.9" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="280.0" cy="187.5" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="280.0" cy="184.0" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="315.3" cy="170.1" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="315.3" cy="167.7" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="443.1" cy="190.4" rx="2.8" ry="6.0" style="fill:var(--flower)"/><circle cx="443.1" cy="186.0" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="828.6" cy="188.6" rx="2.3" ry="4.9" style="fill:var(--flower)"/><circle cx="828.6" cy="185.0" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="811.4" cy="171.9" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="811.4" cy="168.8" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="936.0" cy="201.5" rx="3.0" ry="6.4" style="fill:var(--flower)"/><circle cx="936.0" cy="196.8" r="1.9" style="fill:var(--flower-tip)"/><ellipse cx="470.9" cy="184.4" rx="1.7" ry="3.6" style="fill:var(--flower)"/><circle cx="470.9" cy="181.8" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="761.1" cy="172.2" rx="1.3" ry="2.8" style="fill:var(--flower)"/><circle cx="761.1" cy="170.1" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="408.1" cy="171.9" rx="1.3" ry="2.7" style="fill:var(--flower)"/><circle cx="408.1" cy="169.9" r="0.8" style="fill:var(--flower-tip)"/><ellipse cx="181.5" cy="173.7" rx="1.6" ry="3.4" style="fill:var(--flower)"/><circle cx="181.5" cy="171.2" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="30.6" cy="201.5" rx="2.8" ry="6.0" style="fill:var(--flower)"/><circle cx="30.6" cy="197.1" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="178.3" cy="179.1" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="178.3" cy="176.3" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="437.0" cy="174.4" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="437.0" cy="171.2" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="1191.7" cy="186.8" rx="2.2" ry="4.7" style="fill:var(--flower)"/><circle cx="1191.7" cy="183.4" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="103.1" cy="173.7" rx="1.6" ry="3.4" style="fill:var(--flower)"/><circle cx="103.1" cy="171.2" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="317.7" cy="199.8" rx="2.2" ry="4.7" style="fill:var(--flower)"/><circle cx="317.7" cy="196.4" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="27.7" cy="204.2" rx="2.8" ry="6.0" style="fill:var(--flower)"/><circle cx="27.7" cy="199.8" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="175.9" cy="189.6" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="175.9" cy="186.8" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="633.7" cy="205.2" rx="3.3" ry="7.1" style="fill:var(--flower)"/><circle cx="633.7" cy="200.0" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="835.4" cy="179.4" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="835.4" cy="176.5" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="200.5" cy="197.8" rx="2.6" ry="5.6" style="fill:var(--flower)"/><circle cx="200.5" cy="193.7" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="934.9" cy="181.9" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="934.9" cy="179.2" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="973.8" cy="205.5" rx="3.3" ry="7.1" style="fill:var(--flower)"/><circle cx="973.8" cy="200.3" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="967.3" cy="199.5" rx="2.9" ry="6.1" style="fill:var(--flower)"/><circle cx="967.3" cy="195.0" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="272.1" cy="188.6" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="272.1" cy="185.3" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="34.8" cy="171.0" rx="1.5" ry="3.2" style="fill:var(--flower)"/><circle cx="34.8" cy="168.7" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="311.0" cy="194.9" rx="2.9" ry="6.3" style="fill:var(--flower)"/><circle cx="311.0" cy="190.3" r="1.9" style="fill:var(--flower-tip)"/><ellipse cx="536.7" cy="203.7" rx="3.4" ry="7.2" style="fill:var(--flower)"/><circle cx="536.7" cy="198.4" r="2.2" style="fill:var(--flower-tip)"/><ellipse cx="1146.0" cy="183.1" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="1146.0" cy="180.3" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="272.2" cy="177.1" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="272.2" cy="174.7" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="748.9" cy="202.4" rx="3.1" ry="6.8" style="fill:var(--flower)"/><circle cx="748.9" cy="197.5" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="575.4" cy="193.5" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="575.4" cy="189.2" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="101.7" cy="193.8" rx="2.9" ry="6.1" style="fill:var(--flower)"/><circle cx="101.7" cy="189.3" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="938.8" cy="197.0" rx="2.4" ry="5.2" style="fill:var(--flower)"/><circle cx="938.8" cy="193.2" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="214.2" cy="198.4" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="214.2" cy="194.7" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="961.0" cy="205.0" rx="2.7" ry="5.7" style="fill:var(--flower)"/><circle cx="961.0" cy="200.8" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="481.7" cy="204.1" rx="3.0" ry="6.4" style="fill:var(--flower)"/><circle cx="481.7" cy="199.4" r="1.9" style="fill:var(--flower-tip)"/><ellipse cx="181.4" cy="202.6" rx="3.1" ry="6.6" style="fill:var(--flower)"/><circle cx="181.4" cy="197.8" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="175.4" cy="199.8" rx="3.2" ry="6.9" style="fill:var(--flower)"/><circle cx="175.4" cy="194.7" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="788.7" cy="182.6" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="788.7" cy="179.4" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="157.2" cy="170.5" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="157.2" cy="167.4" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="779.6" cy="189.0" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="779.6" cy="184.7" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="520.6" cy="201.4" rx="3.1" ry="6.6" style="fill:var(--flower)"/><circle cx="520.6" cy="196.6" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="351.6" cy="178.7" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="351.6" cy="175.6" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="311.2" cy="185.1" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="311.2" cy="182.3" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="1092.0" cy="182.7" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="1092.0" cy="179.6" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="700.0" cy="202.6" rx="2.6" ry="5.6" style="fill:var(--flower)"/><circle cx="700.0" cy="198.5" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="1101.3" cy="188.1" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="1101.3" cy="184.6" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="628.2" cy="170.7" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="628.2" cy="168.3" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="959.0" cy="176.2" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="959.0" cy="173.4" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="870.2" cy="190.0" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="870.2" cy="186.7" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="622.0" cy="190.0" rx="2.6" ry="5.6" style="fill:var(--flower)"/><circle cx="622.0" cy="185.9" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="127.3" cy="190.2" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="127.3" cy="187.0" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="332.3" cy="197.8" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="332.3" cy="193.8" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="674.1" cy="197.4" rx="3.0" ry="6.4" style="fill:var(--flower)"/><circle cx="674.1" cy="192.7" r="1.9" style="fill:var(--flower-tip)"/><ellipse cx="531.9" cy="192.1" rx="2.3" ry="4.9" style="fill:var(--flower)"/><circle cx="531.9" cy="188.5" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="614.6" cy="194.9" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="614.6" cy="191.2" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="639.9" cy="187.2" rx="2.7" ry="5.7" style="fill:var(--flower)"/><circle cx="639.9" cy="183.0" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="839.1" cy="201.6" rx="3.2" ry="6.9" style="fill:var(--flower)"/><circle cx="839.1" cy="196.5" r="2.1" style="fill:var(--flower-tip)"/><ellipse cx="311.5" cy="190.1" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="311.5" cy="185.8" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="1008.0" cy="174.9" rx="1.5" ry="3.2" style="fill:var(--flower)"/><circle cx="1008.0" cy="172.6" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="530.5" cy="172.6" rx="1.5" ry="3.2" style="fill:var(--flower)"/><circle cx="530.5" cy="170.3" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="87.7" cy="194.1" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="87.7" cy="189.8" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="1076.4" cy="175.6" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="1076.4" cy="172.5" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="792.3" cy="175.1" rx="2.1" ry="4.5" style="fill:var(--flower)"/><circle cx="792.3" cy="171.8" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="1161.1" cy="177.9" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="1161.1" cy="174.4" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="477.9" cy="187.5" rx="2.7" ry="5.8" style="fill:var(--flower)"/><circle cx="477.9" cy="183.2" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="998.9" cy="175.8" rx="1.8" ry="3.8" style="fill:var(--flower)"/><circle cx="998.9" cy="173.1" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="618.7" cy="182.2" rx="1.7" ry="3.6" style="fill:var(--flower)"/><circle cx="618.7" cy="179.6" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="382.2" cy="196.0" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="382.2" cy="193.0" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="664.9" cy="185.9" rx="1.6" ry="3.4" style="fill:var(--flower)"/><circle cx="664.9" cy="183.4" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="397.8" cy="192.5" rx="2.4" ry="5.1" style="fill:var(--flower)"/><circle cx="397.8" cy="188.8" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="77.1" cy="205.5" rx="3.1" ry="6.8" style="fill:var(--flower)"/><circle cx="77.1" cy="200.6" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="1166.0" cy="173.8" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="1166.0" cy="171.4" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="47.5" cy="198.0" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="47.5" cy="194.5" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="155.5" cy="185.2" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="155.5" cy="181.2" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="982.8" cy="179.3" rx="1.6" ry="3.4" style="fill:var(--flower)"/><circle cx="982.8" cy="176.8" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="1103.0" cy="190.5" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="1103.0" cy="186.5" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="107.4" cy="172.1" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="107.4" cy="169.2" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="510.4" cy="172.6" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="510.4" cy="169.4" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="761.3" cy="198.9" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="761.3" cy="195.7" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="1027.5" cy="172.4" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="1027.5" cy="169.3" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="544.5" cy="182.2" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="544.5" cy="179.0" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="1112.0" cy="179.6" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="1112.0" cy="177.2" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="632.3" cy="178.6" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="632.3" cy="176.2" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="193.7" cy="171.8" rx="1.4" ry="3.0" style="fill:var(--flower)"/><circle cx="193.7" cy="169.6" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="374.4" cy="181.0" rx="2.2" ry="4.8" style="fill:var(--flower)"/><circle cx="374.4" cy="177.5" r="1.4" style="fill:var(--flower-tip)"/><ellipse cx="348.0" cy="188.0" rx="1.9" ry="4.1" style="fill:var(--flower)"/><circle cx="348.0" cy="185.0" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="416.4" cy="170.7" rx="1.4" ry="3.0" style="fill:var(--flower)"/><circle cx="416.4" cy="168.5" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="18.4" cy="196.4" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="18.4" cy="192.4" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="227.3" cy="187.1" rx="2.6" ry="5.6" style="fill:var(--flower)"/><circle cx="227.3" cy="183.0" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="127.5" cy="199.5" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="127.5" cy="195.5" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="594.0" cy="200.0" rx="2.4" ry="5.2" style="fill:var(--flower)"/><circle cx="594.0" cy="196.2" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="608.0" cy="194.8" rx="3.0" ry="6.4" style="fill:var(--flower)"/><circle cx="608.0" cy="190.1" r="1.9" style="fill:var(--flower-tip)"/><ellipse cx="411.2" cy="200.0" rx="2.9" ry="6.1" style="fill:var(--flower)"/><circle cx="411.2" cy="195.5" r="1.8" style="fill:var(--flower-tip)"/><ellipse cx="763.2" cy="184.6" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="763.2" cy="181.5" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="65.3" cy="174.7" rx="1.4" ry="3.0" style="fill:var(--flower)"/><circle cx="65.3" cy="172.5" r="0.9" style="fill:var(--flower-tip)"/><ellipse cx="889.1" cy="179.2" rx="1.6" ry="3.4" style="fill:var(--flower)"/><circle cx="889.1" cy="176.7" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="101.4" cy="200.3" rx="3.1" ry="6.6" style="fill:var(--flower)"/><circle cx="101.4" cy="195.5" r="2.0" style="fill:var(--flower-tip)"/><ellipse cx="804.7" cy="180.1" rx="1.7" ry="3.6" style="fill:var(--flower)"/><circle cx="804.7" cy="177.5" r="1.1" style="fill:var(--flower-tip)"/><ellipse cx="351.7" cy="186.5" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="351.7" cy="183.6" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="535.0" cy="179.5" rx="2.3" ry="4.9" style="fill:var(--flower)"/><circle cx="535.0" cy="175.9" r="1.5" style="fill:var(--flower-tip)"/><ellipse cx="1167.1" cy="189.7" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="1167.1" cy="186.6" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="1158.8" cy="181.1" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="1158.8" cy="178.2" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="1.3" cy="183.7" rx="2.0" ry="4.3" style="fill:var(--flower)"/><circle cx="1.3" cy="180.5" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="603.3" cy="177.2" rx="1.8" ry="3.9" style="fill:var(--flower)"/><circle cx="603.3" cy="174.3" r="1.2" style="fill:var(--flower-tip)"/><ellipse cx="5.9" cy="179.5" rx="1.5" ry="3.3" style="fill:var(--flower)"/><circle cx="5.9" cy="177.1" r="1.0" style="fill:var(--flower-tip)"/><ellipse cx="479.4" cy="171.5" rx="1.3" ry="2.7" style="fill:var(--flower)"/><circle cx="479.4" cy="169.5" r="0.8" style="fill:var(--flower-tip)"/><ellipse cx="365.1" cy="178.4" rx="2.0" ry="4.2" style="fill:var(--flower)"/><circle cx="365.1" cy="175.3" r="1.3" style="fill:var(--flower-tip)"/><ellipse cx="635.0" cy="197.0" rx="2.7" ry="5.7" style="fill:var(--flower)"/><circle cx="635.0" cy="192.8" r="1.7" style="fill:var(--flower-tip)"/><ellipse cx="859.2" cy="201.6" rx="2.5" ry="5.4" style="fill:var(--flower)"/><circle cx="859.2" cy="197.6" r="1.6" style="fill:var(--flower-tip)"/><ellipse cx="391.4" cy="205.5" rx="2.3" ry="4.9" style="fill:var(--flower)"/><circle cx="391.4" cy="201.9" r="1.5" style="fill:var(--flower-tip)"/>'+
+  '</svg></div>';
+}
+function logoMarkMarkup(size){
+  size=size||32;
+  return '<span class="logo-mark"><svg viewBox="0 0 40 40" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hcLogo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" style="stop-color:var(--hero-sky-top)"/><stop offset="100%" style="stop-color:var(--hero-sky-bottom)"/></linearGradient></defs>'+
+  '<rect x="0" y="0" width="40" height="40" rx="11" fill="url(#hcLogo)"/><path d="M0 30 Q12 24 22 28 T40 27 V40 H0 Z" style="fill:var(--hill-near)"/>'+
+  '<path d="M20 34 V14" style="stroke:var(--hill-mid);stroke-width:1.6"/>'+
+  '<ellipse cx="20" cy="27" rx="4.2" ry="2.6" style="fill:var(--flower)"/><ellipse cx="20" cy="22" rx="3.6" ry="2.4" style="fill:var(--flower)"/><ellipse cx="20" cy="17.5" rx="2.9" ry="2.1" style="fill:var(--flower)"/><circle cx="20" cy="13.4" r="1.9" style="fill:var(--flower-tip)"/>'+
+  '</svg></span>';
+}
+const MINIMAL_ICON_SVGS={
+  today:'<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>',
+  people:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/>',
+  learn:'<path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/>',
+  practice:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>',
+  blue:'<path d="M4 5h16v10H9l-5 4z"/>',
+  library:'<path d="M5 4h3v16H5z"/><path d="M10 4h3v16h-3z"/><path d="M15.5 4.5l2.8-.8 3.2 15.5-2.8.8z"/>',
+  data:'<circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M4.2 7.5l2 1.2M17.8 15.3l2 1.2M3 12h2.4M18.6 12H21M4.2 16.5l2-1.2M17.8 8.7l2-1.2"/>'
+};
+const EMOJI_ICONS={today:"📋",people:"👥",learn:"📚",practice:"🎯",blue:"🪻",library:"📖",data:"⚙️"};
+function icon(key,size){
+  size=size||17;
+  if(look().iconStyle==="minimal") return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">'+(MINIMAL_ICON_SVGS[key]||"")+'</svg>';
+  return '<span style="font-size:'+size+'px;line-height:1;display:inline-block">'+(EMOJI_ICONS[key]||"")+'</span>';
+}
+const NAV=[["today","Today"],["people","People"],["learn","Learn"],["practice","Practice"],["blue","Blue Bonnet"],["library","Library"],["data","Settings"]];
+function renderNav(){
+  const opts=[["all","All businesses"],["adv","ADV Media"],["vb","Valencia Brown"]];
   if(S.settings.showTerc) opts.push(["terc","Terciopelo Media"]);
   if(!S.settings.showTerc && S.settings.brand==="terc") S.settings.brand="all";
-  sel.innerHTML=opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("");
-  sel.value=S.settings.brand;
+  const ready=visiblePeople().filter(readyForTouch).length;
+  $("#sidebar").innerHTML='<div class="sb-brand">'+logoMarkMarkup(32)+'<div><div class="brand-title">Clienting</div><div class="brand-sub">Clients and relationships</div></div></div>'+
+    NAV.map(([id,label])=>'<a class="nav-item'+(view===id?" on":"")+'" href="#'+id+'" data-v="'+id+'">'+icon(id)+' '+label+(id==="today"&&ready?'<span class="dot" style="margin:0 0 0 auto"></span>':'')+'</a>').join("")+
+    '<div class="sb-foot"><select id="brandFilter" aria-label="Business">'+opts.map(o=>'<option value="'+o[0]+'"'+(S.settings.brand===o[0]?" selected":"")+'>'+o[1]+'</option>').join("")+'</select>'+
+    '<div class="muted ver" style="font-size:10px;opacity:.55;padding:8px 6px 0">v'+APP_VERSION+'</div></div>';
+  $("#brandFilter").onchange=e=>{S.settings.brand=e.target.value; save(); render();};
 }
-$("#themeSel").onchange=e=>{S.settings.theme=e.target.value; applyTheme(); save();};
-$("#brandFilter").onchange=e=>{S.settings.brand=e.target.value; save(); render();};
-matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyTheme);
+function fillBrandFilter(){}
+// Adulting's look can change in another tab; follow it when this tab comes back.
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && S.settings.matchAdulting!==false){ applyTheme(); renderNav(); } });
 
 /* ---------- dialog ---------- */
 function openDlg(title, bodyHTML, buttons){
@@ -354,8 +601,7 @@ function route(){ const h=(location.hash||"#today").slice(1); lessonId=null;
   render(); window.scrollTo(0,0); }
 window.addEventListener("hashchange",route);
 function render(){
-  fillBrandFilter();
-  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===view));
+  renderNav();
   const m=$("#main"); m.innerHTML=""; VIEWS[view](m);
 }
 
@@ -364,7 +610,8 @@ function vToday(m){
   const ready=visiblePeople().filter(readyForTouch).sort((a,b)=>(daysSince(lastTouch(b))??9999)-(daysSince(lastTouch(a))??9999));
   const nextLesson=LESSONS.find(l=>(S.lessons[l.id]||"not started")!=="done");
   const inbox=S.inbox;
-  m.innerHTML=`
+  m.innerHTML=`<h1>Today</h1><p class="page-sub">${new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})}</p>
+  ${!ready.length&&visiblePeople().length?`<div class="reassure"><span style="font-size:22px">✓</span> You're caught up. Nobody needs a touch right now.</div>`:""}
   <div class="card">
     <h3>Quick note</h3>
     <p class="muted small" style="margin:0 0 8px">Type anything. A name, a lead, something someone said. Sort it later or never.</p>
@@ -382,7 +629,7 @@ function vToday(m){
       <div class="small muted"><span class="dot"></span>${d===null?"No touches logged yet":"Last touch "+d+" days ago"} · every ${p.cadence} days · ${stageName(p.stage)}</div></div>
       <button class="btn mini" data-touch="${p.id}">Log touch</button></div>`}).join(""):`<div class="empty">Nobody right now.</div>`}</div>
   </div>
-  ${nextLesson?`<div class="card clickable" id="nextLesson"><span class="pill">${S.lessons[nextLesson.id]||"not started"}</span>
+  ${nextLesson?`<div class="card clickable" id="nextLesson"><span class="pill ${stClass(S.lessons[nextLesson.id])}">${S.lessons[nextLesson.id]||"not started"}</span>
     <h3 style="margin-top:8px">This week: ${esc(nextLesson.title)}</h3><div class="muted small">${esc(nextLesson.source)}</div></div>`:
     `<div class="card"><h3>All lessons done</h3><p class="muted">Go back through any of them, or practice with Blue Bonnet.</p></div>`}
   `;
@@ -409,7 +656,7 @@ let peopleSearch="";
 function vPeople(m){
   const ppl=visiblePeople().filter(p=>!peopleSearch||(p.name+" "+(p.org||"")+" "+(p.notes||"")).toLowerCase().includes(peopleSearch.toLowerCase()));
   const byStage=STAGES.map(s=>({s,list:ppl.filter(p=>p.stage===s.id)})).filter(g=>g.list.length);
-  m.innerHTML=`<div class="row" style="margin-bottom:12px"><input type="text" id="ps" placeholder="Search people" value="${esc(peopleSearch)}" style="flex:1;min-width:180px"><button class="btn primary" id="addP">Add person</button></div>
+  m.innerHTML=`<h1>People</h1><p class="page-sub">Clients, leads, and the people who send you work.</p><div class="row" style="margin-bottom:16px"><input type="text" id="ps" placeholder="Search people" value="${esc(peopleSearch)}" style="flex:1;min-width:180px"><button class="btn primary" id="addP">Add person</button></div>
   ${byStage.length?byStage.map(g=>`<div class="card"><h3>${g.s.name} <span class="muted small">${g.list.length}</span></h3><div class="list">${g.list.map(p=>{const d=daysSince(lastTouch(p));return `
     <div class="item clickable" data-open="${p.id}"><div class="grow"><b>${esc(p.name)}</b> <span class="muted">${esc(p.org||"")}</span>
     <div class="small muted">${BRANDS[p.brand].name} · ${d===null?"no touches yet":"last touch "+d+" days ago"}</div></div>
@@ -473,9 +720,10 @@ function personDetail(id){
 function vLearn(m){
   if(lessonId) return vLesson(m,lessonId);
   const done=LESSONS.filter(l=>S.lessons[l.id]==="done").length;
-  m.innerHTML=`<h2>Lessons</h2><p class="muted">One a week is plenty. Each one has something to try right on the page, a drill with a real client, and links to the original source. ${done} of ${LESSONS.length} done.</p>
+  m.innerHTML=`<h1>Learn</h1><p class="page-sub">One a week is plenty. Each lesson has something to try on the page, a drill with a real client, and the original source.</p>
+  <div class="card"><div class="row"><b>${done} of ${LESSONS.length} done</b></div><div class="progress-bar"><div style="width:${Math.round(done/LESSONS.length*100)}%"></div></div></div>
   <div class="card list">${LESSONS.map((l,i)=>`<div class="item clickable" data-l="${l.id}"><div class="muted" style="width:22px">${i+1}</div>
-  <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${esc(l.source)}</div></div><span class="pill">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
+  <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${esc(l.source)}</div></div><span class="pill ${stClass(S.lessons[l.id])}">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
   m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{location.hash="#lesson-"+b.dataset.l;});
 }
 function openLesson(id){ location.hash="#lesson-"+id; }
@@ -483,7 +731,7 @@ function vLesson(m,id){
   const i=LESSONS.findIndex(x=>x.id===id), l=LESSONS[i]; const st=S.lessons[id]||"not started";
   const prev=LESSONS[i-1], next=LESSONS[i+1];
   m.innerHTML=`<div class="row" style="margin-bottom:10px"><a href="#learn" class="muted">← All lessons</a><span class="spacer"></span><span class="muted small">Lesson ${i+1} of ${LESSONS.length}</span></div>
-  <h2>${esc(l.title)}</h2><div class="muted small" style="margin-bottom:12px">${esc(l.source)}</div>
+  <h1>${esc(l.title)}</h1><p class="page-sub">${esc(l.source)}</p>
   <div class="card lesson-body"><h3>Read</h3>${l.body}</div>
   <div class="card"><h3>Try it</h3><div id="tool"></div></div>
   <div class="card"><h3>Drill with a real client</h3><p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea>
@@ -515,7 +763,7 @@ function choiceQuiz(el, items){
     el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
       const k=+b.dataset.k, ok=k===it.a; if(!tried && ok) right++; tried=true;
       el.querySelectorAll("[data-k]").forEach(x=>{x.style.borderColor=""; x.style.background="";});
-      b.style.borderColor=ok?"var(--accent)":"var(--amber)"; b.style.background=ok?"var(--accent-soft)":"var(--amber-soft)";
+      b.style.borderColor=ok?"var(--primary)":"var(--partial)"; b.style.background=ok?"var(--surface-2)":"var(--partial-bg)";
       el.querySelector("#fb").innerHTML=`<p>${ok?"<b>Yes.</b> ":"<b>Not quite.</b> "}${esc(it.why)}</p>${ok?`<button class="btn primary" id="nx">Next</button>`:""}`;
       const nx=el.querySelector("#nx"); if(nx) nx.onclick=()=>{i++;draw();};
     });
@@ -606,7 +854,7 @@ function cap(t){ t=String(t||"").trim().replace(/[.!]+$/,""); return t? t.charAt
 
 /* Library */
 function vLibrary(m){
-  m.innerHTML=`<h2>Library</h2><p class="muted">The original sources behind every lesson. The books are copyrighted, so they aren't copied into the app. These links go to the authors' own sites, the original article, and public policy pages. Your library can usually lend the books, too.</p>
+  m.innerHTML=`<h1>Library</h1><p class="page-sub">The original sources behind every lesson. The books are copyrighted, so they aren't copied into the app. These links go to the authors' own sites, the original article, and public policy pages. Your library can usually lend the books, too.</p>
   ${LIBRARY.map(x=>`<div class="card"><h3>${esc(x.title)}</h3><div class="muted small">${esc(x.by)}</div><p>${esc(x.what)}</p>${x.links.map(l=>`<div style="margin:4px 0"><a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a></div>`).join("")}
   <div class="small muted" style="margin-top:8px">Used in: ${LESSONS.filter(ls=>(ls.lib||[]).includes(x.id)).map(ls=>`<a href="#lesson-${ls.id}">${esc(ls.title)}</a>`).join(", ")||"none"}</div></div>`).join("")}`;
 }
@@ -617,7 +865,7 @@ function vPractice(m){
   const ppl=visiblePeople();
   const pOpts=`<option value="">Pick a person</option>`+ppl.map(p=>`<option value="${p.id}">${esc(p.name)}${p.org?" · "+esc(p.org):""}</option>`).join("");
   const qb=Object.entries(QBANK).filter(([k])=>brandOK(k));
-  m.innerHTML=`<div class="seg" style="margin-bottom:14px">${[["prep","Before a call"],["debrief","After a call"],["bank","Question bank"],["notes","My scripts"]].map(([k,v])=>`<button data-m="${k}" class="${practiceMode===k?"on":""}">${v}</button>`).join("")}</div>
+  m.innerHTML=`<h1>Practice</h1><p class="page-sub">Prep before a call, debrief after, and keep the scripts you reuse.</p><div class="seg" style="margin-bottom:16px">${[["prep","Before a call"],["debrief","After a call"],["bank","Question bank"],["notes","My scripts"]].map(([k,v])=>`<button data-m="${k}" class="${practiceMode===k?"on":""}">${v}</button>`).join("")}</div>
   <div id="pBody"></div>`;
   m.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{practiceMode=b.dataset.m; render();});
   const pb=$("#pBody");
@@ -689,8 +937,8 @@ function vBlue(m){
   const scen=Object.entries(SCENARIOS).filter(([k])=>brandOK(k)).flatMap(([k,a])=>a.map(s=>({k,id:s[0],t:s[1]})));
   if(!scen.find(s=>s.id===scenario) && scen.length) scenario=scen[0].id;
   const ctxBits=[]; if(blueCtx.person){const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctxBits.push(p.name);} if(blueCtx.lesson) ctxBits.push("lesson: "+LESSONS.find(x=>x.id===blueCtx.lesson).title); if(blueCtx.script) ctxBits.push("your script"); if(blueCtx.prep) ctxBits.push("call prep"); if(blueCtx.debrief) ctxBits.push("debrief");
-  m.innerHTML=`<div class="card">
-    <div class="row"><span class="bb">✿ Blue Bonnet</span><span class="spacer"></span>
+  m.innerHTML=`<h1>Blue Bonnet</h1><p class="page-sub">Your mentor for client work. Talk something through, or have her play a client.</p><div class="card">
+    <div class="row"><span class="bb">${icon("blue",20)} Blue Bonnet</span><span class="spacer"></span>
     <div class="seg">${[["mentor","Mentor me"],["roleplay","Role-play a client"]].map(([k,v])=>`<button data-bm="${k}" class="${blueMode===k?"on":""}">${v}</button>`).join("")}</div></div>
     ${blueMode==="roleplay"?`<label>Who Blue plays</label><select id="scSel">${scen.map(s=>`<option value="${s.id}" ${s.id===scenario?"selected":""}>${BRANDS[s.k].name}: ${esc(s.t)}</option>`).join("")}</select>
       <p class="muted small" style="margin:6px 0 0">Open the conversation like it's real. Type <b>FEEDBACK</b> anytime to get coached.</p>`:
@@ -789,15 +1037,31 @@ async function sendBlue(text){
 
 /* Data */
 function vData(m){
-  m.innerHTML=`<div class="card"><h3>Privacy</h3>
-    <label style="display:flex;gap:10px;align-items:center;color:var(--ink);font-size:16px"><input type="checkbox" id="tercT" ${S.settings.showTerc?"checked":""} style="width:auto"> Show Terciopelo Media people and lessons</label>
+  const own=S.settings.matchAdulting===false; const A=adultingLook(); const L=look();
+  m.innerHTML=`<h1>Settings</h1><p class="page-sub">How Clienting looks, what it shows, and where your data lives.</p>
+  <div class="card"><h3>Look</h3>
+    <label style="display:flex;gap:10px;align-items:center;color:var(--text);font-size:15px;margin-top:0"><input type="checkbox" id="mA" ${!own?"checked":""}> Match Adulting's light or dark choice and icon style</label>
+    <p class="muted small" style="margin:4px 0 0">${A?"Adulting is set to "+({sunset:"Sunset","mono-light":"Mono light","mono-dark":"Mono dark",custom:"Custom"}[A.theme]||A.theme)+" with "+A.iconStyle+" icons. "+(A.theme==="sunset"?"Clienting shows its own Hill Country look in its place.":"Clienting follows it."):"Adulting hasn't been opened on this device, so Clienting uses its own setting below."}</p>
+    <div style="${!own&&A?"opacity:.45;pointer-events:none":""}">
+      <div class="section-title">Theme</div>
+      <div class="theme-grid">${THEMES.map(([id,n])=>`<button class="theme-swatch ${L.theme===id?"active":""}" data-theme-pick="${id}"><div class="preview ${id}"></div>${n}</button>`).join("")}</div>
+      ${L.theme==="custom"?`<label>Custom color</label><input type="range" id="hue" min="0" max="359" value="${L.customHue}" style="width:100%">`:""}
+      <div class="section-title">Icons</div>
+      <div class="icon-style-grid"><button class="icon-style-option ${L.iconStyle!=="minimal"?"active":""}" data-icon-pick="colorful"><div class="sample">📚</div>Colorful</button><button class="icon-style-option ${L.iconStyle==="minimal"?"active":""}" data-icon-pick="minimal"><div class="sample"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${MINIMAL_ICON_SVGS.learn}</svg></div>Minimal</button></div>
+    </div></div>
+  <div class="card"><h3>Privacy</h3>
+    <label style="display:flex;gap:10px;align-items:center;color:var(--text);font-size:16px"><input type="checkbox" id="tercT" ${S.settings.showTerc?"checked":""} style="width:auto"> Show Terciopelo Media people and lessons</label>
     <p class="muted small">Off by default so it doesn't show up when you're working ADV or Valencia Brown in front of someone.</p></div>
   <div class="card"><h3>Blue Bonnet's memory</h3>
-    <label style="display:flex;gap:10px;align-items:center;color:var(--ink);font-size:16px"><input type="checkbox" id="bmT" ${S.settings.shareBlueMem!==false?"checked":""} style="width:auto"> Let Blue use what she already knows about you, and remember mentoring talks</label>
+    <label style="display:flex;gap:10px;align-items:center;color:var(--text);font-size:16px"><input type="checkbox" id="bmT" ${S.settings.shareBlueMem!==false?"checked":""} style="width:auto"> Let Blue use what she already knows about you, and remember mentoring talks</label>
     <p class="muted small">${(()=>{const bm=blueMemory(); return kitReady()?(bm?"Connected to Blue Bonnet's memory ("+(bm.key.endsWith("beta")?"beta":"main app")+"). "+bm.facts.length+" things she knows are in reach.":"Running on Blue Bonnet. No memory found on this device yet. Open the Blue Bonnet beta here once."):"Shared memory works when Clienting runs from your GitHub Pages site (dustin12342986-hue.github.io).";})()} Role-play sessions are never remembered.</p></div>
   <div class="card"><h3>Where your data lives</h3><p class="muted"><span id="syncNote">${esc(syncText)}</span>. On claude.ai it saves privately to your account. On GitHub Pages it saves in this browser, so use Copy backup to move it between devices.</p></div>
   <div class="card"><h3>Backup</h3><div class="row"><button class="btn" id="cp">Copy backup</button></div>
     <label>Restore from a backup (paste it here)</label><textarea id="imp"></textarea><div class="row" style="margin-top:8px"><button class="btn" id="impB">Restore</button></div></div>`;
+  $("#mA").onchange=e=>{ if(!e.target.checked){ const a=adultingLook(); if(a){ S.settings.theme=a.theme; S.settings.customHue=a.customHue; S.settings.iconStyle=a.iconStyle; } } S.settings.matchAdulting=e.target.checked; save(); applyTheme(); render(); };
+  m.querySelectorAll("[data-theme-pick]").forEach(b=>b.onclick=()=>{S.settings.matchAdulting=false; S.settings.theme=b.dataset.themePick; save(); applyTheme(); render();});
+  m.querySelectorAll("[data-icon-pick]").forEach(b=>b.onclick=()=>{S.settings.matchAdulting=false; S.settings.iconStyle=b.dataset.iconPick; save(); render();});
+  const hue=$("#hue"); if(hue) hue.oninput=e=>{S.settings.customHue=+e.target.value; document.documentElement.style.setProperty("--accent-h",S.settings.customHue); clearTimeout(hue.t); hue.t=setTimeout(save,400);};
   $("#bmT").onchange=e=>{S.settings.shareBlueMem=e.target.checked; save(); render();};
   $("#tercT").onchange=e=>{S.settings.showTerc=e.target.checked; save(); render();};
   $("#cp").onclick=async()=>{ try{ await navigator.clipboard.writeText(JSON.stringify(S)); toast("Copied"); }catch(e){ $("#imp").value=JSON.stringify(S); toast("Select the text below and copy it"); } };
