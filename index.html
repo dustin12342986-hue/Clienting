@@ -72,6 +72,7 @@ dialog .dfoot{padding:12px 18px 16px;display:flex;gap:8px;justify-content:flex-e
 .empty{color:var(--muted);padding:8px 0}
 .bb{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent)}
 details summary{cursor:pointer;color:var(--muted);font-size:15px}
+a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -90,6 +91,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:15px}
     <a href="#learn" data-v="learn">Learn</a>
     <a href="#practice" data-v="practice">Practice</a>
     <a href="#blue" data-v="blue">Blue Bonnet</a>
+    <a href="#library" data-v="library">Library</a>
     <a href="#data" data-v="data">Data</a>
   </nav>
 </header>
@@ -116,7 +118,7 @@ const STATUS = ["not started","in progress","done"];
 
 /* ---------- lessons ---------- */
 const LESSONS = [
-{ id:"trust", title:"Trust is the product",
+{ id:"trust", title:"Trust is the product", lib:["trust"],
   source:"The Trusted Advisor, Maister, Green and Galford (2000)",
   body:`<p>The authors break trust into four parts and put them in one formula:</p>
 <div class="quote"><b>Trust = (Credibility + Reliability + Intimacy) ÷ Self-orientation</b></div>
@@ -128,14 +130,14 @@ const LESSONS = [
 </ul>
 <p>In your work: credibility is your track record. Reliability is the recap that shows up when you said it would. Intimacy is the athletic director telling you what went wrong with the last vendor. Self-orientation is talking about your switcher when they want to talk about their Friday night.</p>`,
   drill:"Pick your three most important clients. From their point of view, rate yourself 1 to 5 on credibility, reliability, intimacy, and self-orientation. Write down your weakest part with each one and one thing you will do about it this month."},
-{ id:"ufc", title:"Set the meeting up front",
+{ id:"ufc", title:"Set the meeting up front", lib:["sandler"],
   source:"Sandler Selling System (David Sandler), the up-front contract",
-  body:`<p>Before a real conversation starts, agree out loud on what it is for, how long it takes, and what happens at the end. A common way to remember it is <b>PALO: Purpose, Agenda, Logistics, Outcome.</b></p>
+  body:`<p>Before a real conversation starts, agree out loud on what will happen. Sandler trainers teach five parts: <b>purpose</b> (why you're meeting), <b>time</b>, <b>their agenda</b> (what they want out of it), <b>your agenda</b>, and the <b>outcome</b> (what decision you'll reach at the end).</p>
 <p>The key piece: tell them it is fine to say no. A clear no early saves you weeks of chasing a maybe.</p>
 <div class="quote">"Thanks for making time. I'd like to use about 20 minutes to understand your season and what's not working right now. I'll ask some questions, and you can ask me anything. At the end, if it's not a fit, just tell me. If it is, we'll pick a next step together. Does that work?"</div>
 <p>When a meeting ends with "let me think about it," the outcome was never agreed. This fixes that.</p>`,
   drill:"Write the opener you will use on your next real call or meeting. Keep it under 40 words. Say it out loud twice."},
-{ id:"spin", title:"Ask before you pitch",
+{ id:"spin", title:"Ask before you pitch", lib:["spin"],
   source:"SPIN Selling, Neil Rackham (1988), built from a study of 35,000 sales calls",
   body:`<p>Four kinds of questions, usually in this order:</p>
 <ul>
@@ -146,7 +148,7 @@ const LESSONS = [
 </ul>
 <p>Example for a venue: "How are your shows staffed today?" (S) "Where does it break down?" (P) "When a call goes short-staffed, what happens to the show and to you?" (I) "If every call was filled and the house never had to think about it, what would that free up?" (N)</p>`,
   drill:"For one real prospect, write one question of each type. Use the Question bank in Practice if you get stuck."},
-{ id:"listen", title:"Listen so they feel heard",
+{ id:"listen", title:"Listen so they feel heard", lib:["voss"],
   source:"Never Split the Difference, Chris Voss",
   body:`<ul>
 <li><b>Mirror:</b> repeat the last one to three important words they said, as a question. "Short-staffed?" Then wait. They keep talking.</li>
@@ -156,7 +158,7 @@ const LESSONS = [
 <li><b>Aim for "That's right."</b> Summarize their situation so well they say it. "You're right" usually means they want you to stop.</li>
 </ul>`,
   drill:"On your next call, use one mirror and one label on purpose. Afterward, log in the Debrief what they said right after each one."},
-{ id:"qualify", title:"Qualify early: pain, budget, decision",
+{ id:"qualify", title:"Qualify early: pain, budget, decision", lib:["sandler"],
   source:"Sandler Selling System",
   body:`<p>Before you write a proposal, know three things:</p>
 <ul>
@@ -166,7 +168,7 @@ const LESSONS = [
 </ul>
 <p>For schools and cities, the budget follows the fiscal year and big spends may need board or council approval. Ask: "Who besides you needs to be comfortable with this?" and "When does something like this usually get approved?"</p>`,
   drill:"For every open opportunity, write what you know about pain, budget, and decision. Each blank is your next question."},
-{ id:"public", title:"Rules for schools and cities",
+{ id:"public", title:"Rules for schools and cities", lib:["isd"],
   source:"Dallas ISD Board Policy CHE (Local) restricted contact period; San Antonio ISD blackout period notices",
   body:`<p>Many Texas districts limit contact while a bid is open. For example, Dallas ISD's restricted contact period starts when an RFP or bid is issued and runs until the award. San Antonio ISD's blackout period also starts on the posting date and ends at award. During that time you talk only to the contact named in the solicitation.</p>
 <p>What that means for relationships:</p>
@@ -176,9 +178,10 @@ const LESSONS = [
 <li>Rules differ by district. Read the solicitation and the district's vendor page each time.</li>
 </ul>`,
   drill:"For each district or city you're pursuing, note in their People entry whether a bid is open right now and who the named contact is."},
-{ id:"keep", title:"The next sale starts after the event",
-  source:"Frederick Reichheld, Bain & Company (Harvard Business Review); Sandler post-sell step",
-  body:`<p>Reichheld's research found that raising customer retention by 5% raised profits by 25% to 95%, depending on the industry. It's a wide range, but the direction is clear: keeping clients is a big lever.</p>
+{ id:"keep", title:"The next sale starts after the event", lib:["hbr","sandler"],
+  source:"Reichheld and Sasser, \"Zero Defections,\" Harvard Business Review (1990); Sandler post-sell step",
+  body:`<p>In a 1990 Harvard Business Review article, Frederick Reichheld and Earl Sasser reported that cutting customer defections by 5% raised profits by 25% to 85%, depending on the industry. Their examples ran from 85% at one bank's branches to 30% at an auto service chain. Later Bain material often quotes 25% to 95%.</p>
+<p>Be careful with the exact number. Critics argue it overstates things, because not every client is profitable to keep. The useful part holds up: keeping good clients is usually cheaper than finding new ones, and it compounds.</p>
 <p>Habits that help:</p>
 <ul>
 <li>Send a short recap soon after each event: what went well, anything you fixed, one thing you'd suggest for next time.</li>
@@ -187,7 +190,7 @@ const LESSONS = [
 <li>Check in when you <i>don't</i> need anything. Send something useful.</li>
 </ul>`,
   drill:"Write a recap message you can reuse after every event. Five sentences or fewer. Save it in Practice notes."},
-{ id:"intro", title:"Ask for introductions",
+{ id:"intro", title:"Ask for introductions", lib:["trust"],
   source:"Builds on the trust and post-sell lessons",
   body:`<p>The best time to ask is right after they tell you something went well. Make the ask specific so it is easy to answer.</p>
 <div class="quote">"I'm really glad that went well. Is there another athletic director or venue manager you think should have this kind of night? I'd be glad to buy you both lunch."</div>
@@ -196,7 +199,7 @@ const LESSONS = [
 <li>Partners count too: companies bidding on work that need your piece of it.</li>
 </ul>`,
   drill:"Pick two happy clients. Write the exact sentence you will use to ask each one for an introduction."},
-{ id:"lanes", title:"Keep each brand in its own lane",
+{ id:"lanes", title:"Keep each brand in its own lane", lib:[],
   source:"Your own business structure",
   body:`<ul>
 <li><b>ADV Media</b> does the production work.</li>
@@ -206,6 +209,33 @@ const LESSONS = [
 <p>Each one needs its own short intro and its own people list. In this app, Terciopelo people are hidden unless you turn them on in Data.</p>`,
   drill:"Write one plain sentence for each brand that you would say when someone asks what it does."}
 ];
+
+/* ---------- library ---------- */
+const LIBRARY = [
+ {id:"trust", title:"The Trusted Advisor", by:"David Maister, Charles Green and Robert Galford (2000). A 20th anniversary edition is in print.",
+  what:"The book the Trust Equation comes from. Charles Green's firm keeps the equation, a free self-assessment, and hundreds of free articles on its site.",
+  links:[["Trusted Advisor Associates: the Trust Equation, free articles, and the Trust Quotient quiz","https://trustedadvisor.com/"],["The book, 20th Anniversary Edition (Bookshop)","https://bookshop.org/p/books/the-trusted-advisor-20th-anniversary-edition-david-h-maister/951063"]]},
+ {id:"sandler", title:"The Sandler Selling System", by:"David Sandler, 1960s. Taught today by Sandler Training.",
+  what:"Source of the up-front contract and of qualifying on pain, budget, and decision before you present.",
+  links:[["Up-front contracts: the simple habit behind more effective meetings (Sandler)","https://go.sandler.com/eam/insights/blog/categories/professional-development/up-front-contracts-the-simple-habit-behind-more-/"],["How to Succeed podcast: knowing when to use an upfront contract (Sandler)","https://www.sandler.com/?p=13148"]]},
+ {id:"spin", title:"SPIN Selling", by:"Neil Rackham (1988), from research at Huthwaite.",
+  what:"Built from a study of 35,000 sales calls. Huthwaite International, the company behind the research, still teaches it.",
+  links:[["SPIN Selling, Huthwaite International","https://huthwaiteinternational.com/spin-selling"],["What is SPIN Selling? (Huthwaite)","https://www.huthwaiteinternational.com/sales-training/about-spin/"]]},
+ {id:"voss", title:"Never Split the Difference", by:"Chris Voss with Tahl Raz (2016).",
+  what:"Voss is a former FBI hostage negotiator. Source of mirroring, labeling, calibrated questions, and \"that's right.\" His company teaches the methods.",
+  links:[["The Black Swan Group (Voss's company)","https://www.blackswanltd.com/"]]},
+ {id:"hbr", title:"Zero Defections: Quality Comes to Services", by:"Frederick Reichheld and W. Earl Sasser Jr., Harvard Business Review, September to October 1990.",
+  what:"The original article behind the retention numbers. Read it with the critique next to it.",
+  links:[["The article (Harvard Business Review)","https://hbr.org/1990/09/zero-defections-quality-comes-to-services"],["A critique: Shattering the Myths of Customer Loyalty (Ipsos)","https://www.ipsos.com/en-us/shattering-myths-customer-loyalty"]]},
+ {id:"isd", title:"Texas district contact rules", by:"Public district policy. The full text is public.",
+  what:"Examples of the no-contact periods while a bid is open. Rules differ by district, so check each one.",
+  links:[["Dallas ISD: Restricted Contact Period, quoting Board Policy CHE (Local)","https://www.dallasisd.org/departments/procurement/doing-business-with-dallas-isd/restricted-contact-period"],["San Antonio ISD solicitation schedule with its blackout period notice (PDF)","https://www.saisd.net/upload/template/0034/docs/BidOpeningSchedule051625.pdf"]]}
+];
+function libLinks(ids){
+  const items=LIBRARY.filter(x=>ids.includes(x.id));
+  if(!items.length) return "";
+  return items.map(x=>`<div style="margin:8px 0"><b>${esc(x.title)}</b><div class="muted small">${esc(x.by)}</div>${x.links.map(l=>`<div><a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a></div>`).join("")}</div>`).join("");
+}
 
 /* ---------- question bank ---------- */
 const QBANK = {
@@ -315,9 +345,13 @@ function openDlg(title, bodyHTML, buttons){
 }
 
 /* ---------- views ---------- */
-const VIEWS={today:vToday,people:vPeople,learn:vLearn,practice:vPractice,blue:vBlue,data:vData};
+const VIEWS={today:vToday,people:vPeople,learn:vLearn,practice:vPractice,blue:vBlue,library:vLibrary,data:vData};
+let lessonId=null;
 let view="today";
-function route(){ const h=(location.hash||"#today").slice(1); view=VIEWS[h]?h:"today"; render(); }
+function route(){ const h=(location.hash||"#today").slice(1); lessonId=null;
+  if(h.startsWith("lesson-") && LESSONS.find(l=>l.id===h.slice(7))){ view="learn"; lessonId=h.slice(7); }
+  else view=VIEWS[h]?h:"today";
+  render(); window.scrollTo(0,0); }
 window.addEventListener("hashchange",route);
 function render(){
   fillBrandFilter();
@@ -357,7 +391,7 @@ function vToday(m){
   m.querySelectorAll("[data-attach]").forEach(b=>b.onclick=()=>attachNote(b.dataset.attach));
   m.querySelectorAll("[data-touch]").forEach(b=>b.onclick=()=>logTouch(b.dataset.touch));
   m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>personDetail(b.dataset.open));
-  const nl=$("#nextLesson"); if(nl) nl.onclick=()=>{location.hash="#learn"; setTimeout(()=>openLesson(nextLesson.id),0);};
+  const nl=$("#nextLesson"); if(nl) nl.onclick=()=>{location.hash="#lesson-"+nextLesson.id;};
 }
 function attachNote(nid){
   const n=S.inbox.find(x=>x.id===nid); const ppl=visiblePeople();
@@ -437,24 +471,144 @@ function personDetail(id){
 
 /* Learn */
 function vLearn(m){
+  if(lessonId) return vLesson(m,lessonId);
   const done=LESSONS.filter(l=>S.lessons[l.id]==="done").length;
-  m.innerHTML=`<h2>Lessons</h2><p class="muted">One a week is plenty. Each one ends with a drill you do with a real client. ${done} of ${LESSONS.length} done.</p>
+  m.innerHTML=`<h2>Lessons</h2><p class="muted">One a week is plenty. Each one has something to try right on the page, a drill with a real client, and links to the original source. ${done} of ${LESSONS.length} done.</p>
   <div class="card list">${LESSONS.map((l,i)=>`<div class="item clickable" data-l="${l.id}"><div class="muted" style="width:22px">${i+1}</div>
   <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${esc(l.source)}</div></div><span class="pill">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
-  m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(b.dataset.l));
+  m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{location.hash="#lesson-"+b.dataset.l;});
 }
-function openLesson(id){
-  const l=LESSONS.find(x=>x.id===id); const st=S.lessons[id]||"not started";
-  openDlg(l.title,`<div class="muted small">Source: ${esc(l.source)}</div><div class="lesson-body">${l.body}</div>
-    <div class="card" style="margin-top:12px"><h3>Drill</h3><p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea></div>
-    <label>Status</label><div class="seg" id="stSeg">${STATUS.map(s=>`<button data-s="${s}" class="${s===st?"on":""}">${s}</button>`).join("")}</div>`,
-  [{label:"Ask Blue about this",fn:()=>{saveDrill(id); blueCtx.lesson=id; location.hash="#blue";}},{label:"Save",cls:"primary",fn:()=>{saveDrill(id); render();}}]);
-  document.querySelectorAll("#stSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#stSeg button").forEach(x=>x.classList.remove("on")); b.classList.add("on");});
+function openLesson(id){ location.hash="#lesson-"+id; }
+function vLesson(m,id){
+  const i=LESSONS.findIndex(x=>x.id===id), l=LESSONS[i]; const st=S.lessons[id]||"not started";
+  const prev=LESSONS[i-1], next=LESSONS[i+1];
+  m.innerHTML=`<div class="row" style="margin-bottom:10px"><a href="#learn" class="muted">← All lessons</a><span class="spacer"></span><span class="muted small">Lesson ${i+1} of ${LESSONS.length}</span></div>
+  <h2>${esc(l.title)}</h2><div class="muted small" style="margin-bottom:12px">${esc(l.source)}</div>
+  <div class="card lesson-body"><h3>Read</h3>${l.body}</div>
+  <div class="card"><h3>Try it</h3><div id="tool"></div></div>
+  <div class="card"><h3>Drill with a real client</h3><p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea>
+    <div class="row" style="margin-top:10px"><div class="seg" id="stSeg">${STATUS.map(x=>`<button data-s="${x}" class="${x===st?"on":""}">${x}</button>`).join("")}</div><span class="spacer"></span><button class="btn primary" id="drSave">Save</button></div></div>
+  <div class="card"><h3>Practice with Blue</h3><p class="muted small" style="margin:0 0 8px">Blue plays a client, and her feedback is about this lesson's skill.</p>
+    <div class="row"><button class="btn" id="lBlueRP">Role-play this lesson</button><button class="btn ghost" id="lBlueM">Talk it through</button></div></div>
+  ${l.lib&&l.lib.length?`<div class="card"><h3>Read the source</h3>${libLinks(l.lib)}<p class="small" style="margin:8px 0 0"><a href="#library">All sources in the Library</a></p></div>`:""}
+  <div class="row">${prev?`<a class="btn" href="#lesson-${prev.id}">← ${esc(prev.title)}</a>`:""}<span class="spacer"></span>${next?`<a class="btn" href="#lesson-${next.id}">${esc(next.title)} →</a>`:""}</div>`;
+  document.querySelectorAll("#stSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#stSeg button").forEach(x=>x.classList.remove("on")); b.classList.add("on"); S.lessons[id]=b.dataset.s; save(); toast("Marked "+b.dataset.s);});
+  $("#drSave").onclick=()=>saveDrill(id);
+  $("#lBlueRP").onclick=()=>{saveDrill(id,true); blueCtx={lesson:id}; blueMode="roleplay"; blueMsgs=[]; location.hash="#blue";};
+  $("#lBlueM").onclick=()=>{saveDrill(id,true); blueCtx={lesson:id}; blueMode="mentor"; blueMsgs=[]; location.hash="#blue";};
+  (TOOLS[id]||(()=>{}))($("#tool"));
 }
-function saveDrill(id){
-  S.drills[id]=$("#drillTxt").value; const on=document.querySelector("#stSeg button.on"); if(on) S.lessons[id]=on.dataset.s;
+function saveDrill(id,quiet){
+  const t=$("#drillTxt"); if(!t) return; S.drills[id]=t.value;
   if(S.drills[id] && (S.lessons[id]||"not started")==="not started") S.lessons[id]="in progress";
-  save(); toast("Saved");
+  save(); if(!quiet){ toast("Saved"); render(); }
+}
+
+/* ---------- interactive tools ---------- */
+function choiceQuiz(el, items){
+  // items: [{q, opts:[...], a:index, why}]
+  let i=0, right=0;
+  const draw=()=>{
+    if(i>=items.length){ el.innerHTML=`<p><b>${right} of ${items.length}</b> on the first try.</p><button class="btn" id="qz">Go again</button>`; el.querySelector("#qz").onclick=()=>{i=0;right=0;draw();}; return; }
+    const it=items[i]; let tried=false;
+    el.innerHTML=`<div class="muted small">${i+1} of ${items.length}</div><p style="font-size:18px">${esc(it.q)}</p><div id="opts">${it.opts.map((o,k)=>`<button class="btn" data-k="${k}" style="display:block;width:100%;text-align:left;margin:6px 0">${esc(o)}</button>`).join("")}</div><div id="fb"></div>`;
+    el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===it.a; if(!tried && ok) right++; tried=true;
+      el.querySelectorAll("[data-k]").forEach(x=>{x.style.borderColor=""; x.style.background="";});
+      b.style.borderColor=ok?"var(--accent)":"var(--amber)"; b.style.background=ok?"var(--accent-soft)":"var(--amber-soft)";
+      el.querySelector("#fb").innerHTML=`<p>${ok?"<b>Yes.</b> ":"<b>Not quite.</b> "}${esc(it.why)}</p>${ok?`<button class="btn primary" id="nx">Next</button>`:""}`;
+      const nx=el.querySelector("#nx"); if(nx) nx.onclick=()=>{i++;draw();};
+    });
+  };
+  draw();
+}
+function builder(el, fields, compose, opts){
+  opts=opts||{};
+  const saved=(S.tools=S.tools||{})[opts.key]||{};
+  el.innerHTML=fields.map(f=>`<label>${esc(f[1])}</label>${f[3]?`<textarea data-f="${f[0]}" placeholder="${esc(f[2]||"")}" style="min-height:60px">${esc(saved[f[0]]||"")}</textarea>`:`<input type="text" data-f="${f[0]}" placeholder="${esc(f[2]||"")}" value="${esc(saved[f[0]]||"")}">`}`).join("")+
+   `<label>Your script</label><div class="quote" id="out" style="white-space:pre-wrap;min-height:40px"></div>
+   <div class="row"><button class="btn" id="cpy">Copy</button><button class="btn" id="toScr">Save to My scripts</button>${opts.blue?`<button class="btn" id="rh">Rehearse with Blue</button>`:""}</div>`;
+  const vals=()=>{const v={}; el.querySelectorAll("[data-f]").forEach(x=>v[x.dataset.f]=x.value.trim()); return v;};
+  const upd=()=>{const v=vals(); el.querySelector("#out").textContent=compose(v); S.tools[opts.key]=v; clearTimeout(upd.t); upd.t=setTimeout(save,600);};
+  el.querySelectorAll("[data-f]").forEach(x=>x.oninput=upd); upd();
+  el.querySelector("#cpy").onclick=async()=>{try{await navigator.clipboard.writeText(el.querySelector("#out").textContent); toast("Copied");}catch(e){toast("Select the text to copy it");}};
+  el.querySelector("#toScr").onclick=()=>{S.notes=(S.notes?S.notes+"\n\n":"")+(opts.title||"Script")+":\n"+el.querySelector("#out").textContent; save(); toast("Saved to My scripts");};
+  const rh=el.querySelector("#rh"); if(rh) rh.onclick=()=>{blueCtx={lesson:opts.lesson,script:el.querySelector("#out").textContent}; blueMode="roleplay"; blueMsgs=[]; location.hash="#blue";};
+}
+function personPicker(id){ const ppl=visiblePeople(); return `<select id="${id}"><option value="">Pick a person (optional)</option>${ppl.map(p=>`<option value="${p.id}">${esc(p.name)}${p.org?" · "+esc(p.org):""}</option>`).join("")}</select>`; }
+
+const TOOLS={
+ trust(el){
+  el.innerHTML=`<p class="muted small" style="margin-top:0">Score one relationship the way <i>they</i> would. 1 is low, 10 is high. For self-orientation, 10 means it's mostly about you.</p>
+   ${personPicker("tP")}
+   ${[["C","Credibility: they believe what you say"],["R","Reliability: small promises get kept"],["I","Intimacy: they tell you the real problem"],["S","Self-orientation: how much it's about you"]].map(([k,t])=>`<label>${t} <b id="v${k}">5</b></label><input type="range" min="1" max="10" value="5" data-k="${k}" style="width:100%">`).join("")}
+   <div class="quote" id="tOut"></div><div class="row"><button class="btn primary" id="tSave">Save to person</button></div><div id="tHist"></div>`;
+  const get=()=>{const v={}; el.querySelectorAll("[data-k]").forEach(x=>v[x.dataset.k]=+x.value); return v;};
+  const upd=()=>{const v=get(); ["C","R","I","S"].forEach(k=>el.querySelector("#v"+k).textContent=v[k]);
+    const score=(v.C+v.R+v.I)/v.S; const low=[["credibility",v.C],["reliability",v.R],["intimacy",v.I]].sort((a,b)=>a[1]-b[1])[0];
+    el.querySelector("#tOut").innerHTML=`<b>Trust score: ${score.toFixed(1)}</b> <span class="muted small">(highest possible is 30)</span><br>${v.S>=6?"Self-orientation is pulling everything down. Fastest fix: ask more and talk about yourself less.":"Weakest part: <b>"+low[0]+"</b>. "+({credibility:"Share a specific, honest view, including what you don't know.",reliability:"Make one small promise this week and keep it on time.",intimacy:"Ask what's really worrying them, then just listen."})[low[0]]}`;};
+  el.querySelectorAll("[data-k]").forEach(x=>x.oninput=upd); upd();
+  const hist=()=>{const p=S.people.find(x=>x.id===el.querySelector("#tP").value); el.querySelector("#tHist").innerHTML=p&&p.trust&&p.trust.length?`<label>Past scores for ${esc(p.name)}</label>`+p.trust.slice(0,5).map(t=>`<div class="small">${fmtDate(t.d)}: C${t.C} R${t.R} I${t.I} S${t.S} = <b>${((t.C+t.R+t.I)/t.S).toFixed(1)}</b></div>`).join(""):"";};
+  el.querySelector("#tP").onchange=hist;
+  el.querySelector("#tSave").onclick=()=>{const p=S.people.find(x=>x.id===el.querySelector("#tP").value); if(!p){toast("Pick a person");return;} (p.trust=p.trust||[]).unshift(Object.assign({d:today()},get())); save(); hist(); toast("Saved");};
+ },
+ ufc(el){ builder(el,[["purpose","Purpose: why you're meeting","Understand your season and what's not working"],["time","Time","20 minutes"],["theirs","Their agenda: what they want from it","Whatever you need to know about us"],["mine","Your agenda: what you want to learn","How your events are staffed and where it breaks"],["outcome","Outcome: what happens at the end","It's fine to say it's not a fit. If it is, we pick a next step."]],
+   v=>`Thanks for making the time. ${v.purpose?"I'd like to "+lc(v.purpose)+".":""} ${v.time?"Does "+v.time+" still work?":""} ${v.theirs?"I want to make sure we cover "+lc(v.theirs)+".":""} ${v.mine?"I'll also ask about "+lc(v.mine)+".":""} ${v.outcome?"At the end: "+v.outcome:""} Does that sound fair?`.replace(/\s+/g," ").trim(),
+   {key:"ufc",title:"Up-front contract",blue:true,lesson:"ufc"}); },
+ spin(el){
+  const Q=[["How many events does your venue host in a year?","S"],["Who handles your production staffing today?","S"],["Where does your broadcast tend to fall short?","P"],["Are you happy with how fast vendors respond?","P"],["When a camera operator doesn't show, what does that do to game night?","I"],["How do sponsors react when the stream drops?","I"],["If every call were filled a week ahead, what would that free up for you?","N"],["How would a cleaner broadcast help with sponsor renewals?","N"]];
+  const names={S:"Situation",P:"Problem",I:"Implication",N:"Need-payoff"};
+  const why={S:"It asks for facts about how things work now.",P:"It asks what's hard or not working.",I:"It asks what the problem costs them.",N:"It gets them to say the value of fixing it."};
+  const order=Q.map((_,i)=>i).sort(()=>Math.random()-.5);
+  choiceQuiz(el, order.map(i=>({q:Q[i][0],opts:["Situation","Problem","Implication","Need-payoff"],a:"SPIN".indexOf(Q[i][1]),why:names[Q[i][1]]+". "+why[Q[i][1]]})));
+ },
+ listen(el){
+  choiceQuiz(el,[
+   {q:"Swap out the \"why\": \"Why haven't you signed the renewal?\"",opts:["\"What's been holding the renewal up?\"","\"When are you going to sign?\"","\"Is there a reason you're delaying?\""],a:0,why:"A what or how question invites an answer. The others still sound like pressure."},
+   {q:"Swap out the \"why\": \"Why did you go with the other vendor last year?\"",opts:["\"Was it the price?\"","\"What made them the right call last year?\"","\"Why not us?\""],a:1,why:"It lets them explain their thinking without defending it, and you learn what they value."},
+   {q:"Swap out the \"why\": \"Why is the budget so low?\"",opts:["\"Can you go any higher?\"","\"Is that your final number?\"","\"How did you arrive at that budget?\""],a:2,why:"You learn where the number came from and who set it. That's your path to changing it."},
+   {q:"They say: \"Honestly, the last company left us scrambling on homecoming night.\" Best label?",opts:["\"I hear you. We're way better than them.\"","\"It sounds like you got burned on a night that really mattered.\"","\"That happens a lot in this industry.\""],a:1,why:"It names what they felt. The first one makes it about you, and the third waves it off."},
+   {q:"They say: \"I'd have to take this to the board, and they're tight on spending this year.\" Best label?",opts:["\"It seems like you're the one who'll have to defend this number.\"","\"Boards are always like that.\"","\"Can I just present to them myself?\""],a:0,why:"It shows you see their position. Next, ask how you can make that easier for them."},
+   {q:"They say: \"We like you. We just aren't sure about the timing.\" Best label?",opts:["\"Timing is never perfect.\"","\"When would be better?\"","\"It sounds like something about this season makes change hard right now.\""],a:2,why:"It invites them to tell you the real reason, which is usually more useful than a date."}
+  ]);
+ },
+ qualify(el){
+  el.innerHTML=`${personPicker("qP")}${[["pain","Pain: the real problem, in their words"],["budget","Budget: is there money, and roughly how much"],["decision","Decision: who signs, who else has a say, and when"]].map(([k,t])=>`<label>${t}</label><input type="text" data-q="${k}" placeholder="Leave blank if you don't know yet">`).join("")}<div class="quote" id="qOut"></div><div class="row"><button class="btn primary" id="qSave">Save to person's notes</button></div>`;
+  const ask={pain:["What made this worth a conversation now?","What happens if nothing changes this season?"],budget:["Has money been set aside for this?","When you've done something like this before, what did it run?"],decision:["Who besides you needs to be comfortable with this?","When does something like this usually get approved?"]};
+  const upd=()=>{const blanks=[...el.querySelectorAll("[data-q]")].filter(x=>!x.value.trim()).map(x=>x.dataset.q);
+    el.querySelector("#qOut").innerHTML=blanks.length?`<b>Your next questions:</b><ul style="margin:6px 0 0 20px;padding:0">${blanks.flatMap(b=>ask[b]).map(q=>`<li>${esc(q)}</li>`).join("")}</ul>`:"<b>All three known.</b> This one is qualified. You've earned the right to propose.";};
+  el.querySelectorAll("[data-q]").forEach(x=>x.oninput=upd); upd();
+  el.querySelector("#qSave").onclick=()=>{const p=S.people.find(x=>x.id===el.querySelector("#qP").value); if(!p){toast("Pick a person");return;} const v={}; el.querySelectorAll("[data-q]").forEach(x=>v[x.dataset.q]=x.value.trim()||"unknown");
+    p.notes=(p.notes?p.notes+"\n":"")+fmtDate(today())+": Pain: "+v.pain+". Budget: "+v.budget+". Decision: "+v.decision+"."; save(); toast("Saved to "+p.name);};
+ },
+ public(el){
+  choiceQuiz(el,[
+   {q:"A district posted an RFP yesterday. Its athletic director texts asking if you're bidding and what you'd charge. What do you do?",opts:["Answer, since they reached out first","Say kindly that you can't discuss an open bid, and point them to the contact named in the solicitation"],a:1,why:"In districts with a restricted contact period, it starts when the solicitation is issued. Who started the conversation doesn't change that. Check the solicitation for the named contact."},
+   {q:"No bid is open. You'd like the athletic director to see a broadcast from your control room. Okay?",opts:["Usually yes, between solicitations. Keep it professional, and check the district's vendor rules on gifts and meals","Never, any contact is off limits"],a:0,why:"Between solicitations is when relationships get built. Gifts and meals to public employees have their own rules, so look those up for that district."},
+   {q:"Dallas ISD's restricted contact period ends when?",opts:["When proposals are due","When the award is executed"],a:1,why:"Dallas ISD's page says it runs from issuance until the award is executed. Other districts word it differently, so read each one."}
+  ]);
+ },
+ keep(el){ builder(el,[["name","Client's first name","Greg"],["good","What went well","the broadcast ran clean all four quarters"],["fixed","Anything you fixed or improved","we moved camera 3 so the sideline view stays clear"],["suggest","One suggestion for next time","adding a halftime graphics package for sponsors"],["next","Next date or step","see you Friday the 14th"]],
+   v=>`Hi ${v.name||"[name]"}, thanks again for having us. ${v.good?cap(v.good)+".":""} ${v.fixed?"We also "+lc(v.fixed)+".":""} ${v.suggest?"One idea for next time: "+lc(v.suggest)+". Happy to walk you through it.":""} ${v.next?cap(v.next)+".":""}`.replace(/\s+/g," ").trim(),
+   {key:"keep",title:"Event recap"}); },
+ intro(el){ builder(el,[["name","Client's first name","Greg"],["win","What they said went well","the parents loved the stream"],["who","Who you'd like to meet","another athletic director or venue manager"],["offer","What you'll offer","lunch on me"]],
+   v=>`${v.name?v.name+", ":""}I'm really glad ${v.win?lc(v.win):"that went well"}. Is there ${v.who?(/^(a|an|another|the)\b/i.test(v.who)?lc(v.who):"someone like "+lc(v.who)):"someone"} you think should have a night like that? ${v.offer?"I'd be glad to "+(/^(lunch|coffee|dinner)/i.test(v.offer)?"buy you both "+lc(v.offer):lc(v.offer))+".":""}`.replace(/\s+/g," ").trim(),
+   {key:"intro",title:"Introduction ask",blue:true,lesson:"intro"}); },
+ lanes(el){ builder(el,[["adv","ADV Media in one sentence","We produce live events and broadcasts, start to finish."],["vb","Valencia Brown in one sentence","We help businesses get clear on who they are and how to say it."],...(S.settings.showTerc?[["terc","Terciopelo Media in one sentence","Boudoir and burlesque, done with care and discretion."]]:[])],
+   v=>[v.adv&&"ADV Media: "+v.adv, v.vb&&"Valencia Brown: "+v.vb, v.terc&&S.settings.showTerc&&"Terciopelo Media: "+v.terc].filter(Boolean).join("\n"),
+   {key:"lanes",title:"Brand one-liners"});
+  const warn=document.createElement("p"); warn.className="small muted"; el.appendChild(warn);
+  const chk=()=>{const vb=(el.querySelector('[data-f="vb"]')||{}).value||""; warn.innerHTML=/produc|film|shoot|crew|broadcast/i.test(vb)?'<span class="dot"></span>Your Valencia Brown line sounds like production work. Valencia Brown is advisory only.':"";};
+  el.querySelectorAll("[data-f]").forEach(x=>x.addEventListener("input",chk)); chk(); }
+};
+function lc(t){ t=String(t||"").trim().replace(/[.!]+$/,""); return t? t.charAt(0).toLowerCase()+t.slice(1):t; }
+function cap(t){ t=String(t||"").trim().replace(/[.!]+$/,""); return t? t.charAt(0).toUpperCase()+t.slice(1):t; }
+
+/* Library */
+function vLibrary(m){
+  m.innerHTML=`<h2>Library</h2><p class="muted">The original sources behind every lesson. The books are copyrighted, so they aren't copied into the app. These links go to the authors' own sites, the original article, and public policy pages. Your library can usually lend the books, too.</p>
+  ${LIBRARY.map(x=>`<div class="card"><h3>${esc(x.title)}</h3><div class="muted small">${esc(x.by)}</div><p>${esc(x.what)}</p>${x.links.map(l=>`<div style="margin:4px 0"><a href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a></div>`).join("")}
+  <div class="small muted" style="margin-top:8px">Used in: ${LESSONS.filter(ls=>(ls.lib||[]).includes(x.id)).map(ls=>`<a href="#lesson-${ls.id}">${esc(ls.title)}</a>`).join(", ")||"none"}</div></div>`).join("")}`;
 }
 
 /* Practice */
@@ -516,7 +670,8 @@ let scenario="ad";
 function blueInstructions(){
   let ctx="";
   if(blueCtx.person){ const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctx+=`\nPerson Dusty is working with: ${p.name}, ${p.role||""} at ${p.org||"unknown org"} (${BRANDS[p.brand].name}, stage: ${stageName(p.stage)}). What they care about: ${p.cares||"not noted"}. Notes: ${(p.notes||"").slice(0,1200)}`; }
-  if(blueCtx.lesson){ const l=LESSONS.find(x=>x.id===blueCtx.lesson); ctx+=`\nDusty is working on the lesson "${l.title}" (${l.source}). His drill answer: ${S.drills[l.id]||"none yet"}`; }
+  if(blueCtx.lesson){ const l=LESSONS.find(x=>x.id===blueCtx.lesson); ctx+=`\nDusty is working on the lesson "${l.title}" (${l.source}). His drill answer: ${S.drills[l.id]||"none yet"}. In role-play, give him chances to use this skill, and when he asks for FEEDBACK, judge him mainly on this skill.`; }
+  if(blueCtx.script) ctx+=`\nThe script he wants to rehearse: ${blueCtx.script}`;
   if(blueCtx.prep) ctx+=`\nHis call prep: ${JSON.stringify(blueCtx.prep)}`;
   if(blueCtx.debrief) ctx+=`\nHis call debrief: ${JSON.stringify(blueCtx.debrief)}`;
   const bm=blueMemory();
@@ -533,7 +688,7 @@ Rules: Write in plain, short sentences. Never use em dashes or en dashes; use co
 function vBlue(m){
   const scen=Object.entries(SCENARIOS).filter(([k])=>brandOK(k)).flatMap(([k,a])=>a.map(s=>({k,id:s[0],t:s[1]})));
   if(!scen.find(s=>s.id===scenario) && scen.length) scenario=scen[0].id;
-  const ctxBits=[]; if(blueCtx.person){const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctxBits.push(p.name);} if(blueCtx.lesson) ctxBits.push("lesson: "+LESSONS.find(x=>x.id===blueCtx.lesson).title); if(blueCtx.prep) ctxBits.push("call prep"); if(blueCtx.debrief) ctxBits.push("debrief");
+  const ctxBits=[]; if(blueCtx.person){const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctxBits.push(p.name);} if(blueCtx.lesson) ctxBits.push("lesson: "+LESSONS.find(x=>x.id===blueCtx.lesson).title); if(blueCtx.script) ctxBits.push("your script"); if(blueCtx.prep) ctxBits.push("call prep"); if(blueCtx.debrief) ctxBits.push("debrief");
   m.innerHTML=`<div class="card">
     <div class="row"><span class="bb">✿ Blue Bonnet</span><span class="spacer"></span>
     <div class="seg">${[["mentor","Mentor me"],["roleplay","Role-play a client"]].map(([k,v])=>`<button data-bm="${k}" class="${blueMode===k?"on":""}">${v}</button>`).join("")}</div></div>
@@ -554,7 +709,7 @@ function vBlue(m){
   const fb=$("#bFb"); if(fb) fb.onclick=()=>sendBlue("FEEDBACK");
   $("#bIn").onkeydown=e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)) sendBlue($("#bIn").value); };
   const ch=$("#chat"); ch.scrollTop=ch.scrollHeight;
-  if(!sampleFn) $("#bStat").textContent="Connecting to Blue…";
+  if(!sampleFn && !kitReady()) $("#bStat").textContent="Connecting to Blue…";
 }
 async function getSample(){
   if(sampleFn) return sampleFn;
