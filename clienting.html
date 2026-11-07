@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clienting</title>
+<style>
+:root{
+  --bg:#F6F6F3; --card:#FFFFFF; --ink:#1E2126; --muted:#62666E; --line:#E2E2DC;
+  --accent:#2E3C87; --accent-soft:#E7EAF6; --amber:#B7791F; --amber-soft:#FBF1DF;
+  --radius:14px;
+}
+[data-theme="dark"]{
+  --bg:#15171B; --card:#1D2025; --ink:#E9EAEC; --muted:#A0A4AC; --line:#2D3138;
+  --accent:#8B9AE8; --accent-soft:#252B45; --amber:#E0A84E; --amber-soft:#3A2F1C;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{max-width:860px;margin:0 auto;padding:14px 18px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:21px;letter-spacing:.2px}
+.brand small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.spacer{flex:1}
+select,input,textarea,button{font:inherit;color:inherit}
+select,input[type=text],input[type=date],input[type=number],textarea{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+textarea{min-height:84px;resize:vertical}
+.mini{width:auto;font-size:15px;padding:6px 9px}
+nav{max-width:860px;margin:0 auto;padding:8px 12px 0;display:flex;gap:2px;overflow-x:auto}
+nav a{padding:10px 14px;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;font-size:16px}
+nav a.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 18px 80px}
+h2{font-size:22px;margin:6px 0 12px}
+h3{font-size:18px;margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+label{display:block;font-size:14px;color:var(--muted);margin:10px 0 4px}
+.btn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+[data-theme="dark"] .btn.primary{color:#14182E}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.pill{display:inline-block;font-size:13px;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.amber{background:var(--amber-soft)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber);margin-right:6px;vertical-align:middle}
+.list .item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.list .item:first-child{border-top:none}
+.item .grow{flex:1;min-width:0}
+.clickable{cursor:pointer}
+.lesson-body p{margin:8px 0}
+.lesson-body ul{margin:6px 0 6px 20px;padding:0}
+.quote{border-left:3px solid var(--accent);padding:6px 12px;margin:10px 0;background:var(--accent-soft);border-radius:0 10px 10px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:none;background:var(--card);padding:6px 12px;cursor:pointer;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:56vh;overflow:auto;padding:4px}
+.msg{padding:10px 13px;border-radius:12px;max-width:88%;white-space:pre-wrap}
+.msg.me{align-self:flex-end;background:var(--accent-soft)}
+.msg.blue{align-self:flex-start;background:var(--card);border:1px solid var(--line)}
+.msg .who{font-size:12px;color:var(--muted);display:block;margin-bottom:2px}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:0;width:min(620px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog .dhead{padding:16px 18px 0}
+dialog .dbody{padding:4px 18px 10px;max-height:70vh;overflow:auto}
+dialog .dfoot{padding:12px 18px 16px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--line)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.sync{font-size:12px;color:var(--muted)}
+.empty{color:var(--muted);padding:8px 0}
+.bb{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent)}
+details summary{cursor:pointer;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">Clienting<small>Find clients. Keep them. Get better at it.</small></div>
+    <div class="spacer"></div>
+    <select id="brandFilter" class="mini" aria-label="Business"></select>
+    <select id="themeSel" class="mini" aria-label="Theme">
+      <option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option>
+    </select>
+  </div>
+  <nav id="nav">
+    <a href="#today" data-v="today">Today</a>
+    <a href="#people" data-v="people">People</a>
+    <a href="#learn" data-v="learn">Learn</a>
+    <a href="#practice" data-v="practice">Practice</a>
+    <a href="#blue" data-v="blue">Blue Bonnet</a>
+    <a href="#data" data-v="data">Data</a>
+  </nav>
+</header>
+<main id="main"></main>
+<dialog id="dlg"><div class="dhead"><h3 id="dlgTitle"></h3></div><div class="dbody" id="dlgBody"></div><div class="dfoot" id="dlgFoot"></div></dialog>
+<div class="toast" id="toast"></div>
+<script src="blue-bonnet-kit.js"></script>
+<script>
+/* ---------- constants ---------- */
+const BRANDS = {
+  adv:{name:"ADV Media", desc:"Live event and broadcast production"},
+  vb:{name:"Valencia Brown", desc:"Consulting and brand strategy (advisory only)"},
+  terc:{name:"Terciopelo Media", desc:"Boudoir, burlesque, and adult creative work"}
+};
+const STAGES = [
+  {id:"lead", name:"Lead", cadence:14},
+  {id:"talking", name:"Talking", cadence:7},
+  {id:"client", name:"Client", cadence:30},
+  {id:"past", name:"Past client", cadence:60},
+  {id:"partner", name:"Partner or referrer", cadence:30}
+];
+const TOUCH_TYPES = ["Call","Email","Text","In person","At an event","Sent something useful"];
+const STATUS = ["not started","in progress","done"];
+
+/* ---------- lessons ---------- */
+const LESSONS = [
+{ id:"trust", title:"Trust is the product",
+  source:"The Trusted Advisor, Maister, Green and Galford (2000)",
+  body:`<p>The authors break trust into four parts and put them in one formula:</p>
+<div class="quote"><b>Trust = (Credibility + Reliability + Intimacy) ÷ Self-orientation</b></div>
+<ul>
+<li><b>Credibility</b> is about your words. Do they believe what you say about the work?</li>
+<li><b>Reliability</b> is about your actions over time. Do the small promises get kept?</li>
+<li><b>Intimacy</b> is whether they feel safe telling you the real problem.</li>
+<li><b>Self-orientation</b> is how much the conversation is about you. It sits on the bottom, so it is the only part where lower is better. A strong resume does not make up for it.</li>
+</ul>
+<p>In your work: credibility is your track record. Reliability is the recap that shows up when you said it would. Intimacy is the athletic director telling you what went wrong with the last vendor. Self-orientation is talking about your switcher when they want to talk about their Friday night.</p>`,
+  drill:"Pick your three most important clients. From their point of view, rate yourself 1 to 5 on credibility, reliability, intimacy, and self-orientation. Write down your weakest part with each one and one thing you will do about it this month."},
+{ id:"ufc", title:"Set the meeting up front",
+  source:"Sandler Selling System (David Sandler), the up-front contract",
+  body:`<p>Before a real conversation starts, agree out loud on what it is for, how long it takes, and what happens at the end. A common way to remember it is <b>PALO: Purpose, Agenda, Logistics, Outcome.</b></p>
+<p>The key piece: tell them it is fine to say no. A clear no early saves you weeks of chasing a maybe.</p>
+<div class="quote">"Thanks for making time. I'd like to use about 20 minutes to understand your season and what's not working right now. I'll ask some questions, and you can ask me anything. At the end, if it's not a fit, just tell me. If it is, we'll pick a next step together. Does that work?"</div>
+<p>When a meeting ends with "let me think about it," the outcome was never agreed. This fixes that.</p>`,
+  drill:"Write the opener you will use on your next real call or meeting. Keep it under 40 words. Say it out loud twice."},
+{ id:"spin", title:"Ask before you pitch",
+  source:"SPIN Selling, Neil Rackham (1988), built from a study of 35,000 sales calls",
+  body:`<p>Four kinds of questions, usually in this order:</p>
+<ul>
+<li><b>Situation:</b> facts about how things work now. Keep these few. Do your homework so you don't waste their time.</li>
+<li><b>Problem:</b> what is hard, slow, or not working.</li>
+<li><b>Implication:</b> what that problem costs them. Time, money, reputation, stress.</li>
+<li><b>Need-payoff:</b> what it would be worth to fix. The point is that <i>they</i> say the value, not you.</li>
+</ul>
+<p>Example for a venue: "How are your shows staffed today?" (S) "Where does it break down?" (P) "When a call goes short-staffed, what happens to the show and to you?" (I) "If every call was filled and the house never had to think about it, what would that free up?" (N)</p>`,
+  drill:"For one real prospect, write one question of each type. Use the Question bank in Practice if you get stuck."},
+{ id:"listen", title:"Listen so they feel heard",
+  source:"Never Split the Difference, Chris Voss",
+  body:`<ul>
+<li><b>Mirror:</b> repeat the last one to three important words they said, as a question. "Short-staffed?" Then wait. They keep talking.</li>
+<li><b>Label:</b> name what they seem to feel. "It sounds like the last vendor left you holding the bag." Don't say "I hear you."</li>
+<li><b>Calibrated questions:</b> open questions that start with what or how. "What would make this an easy yes for your board?"</li>
+<li><b>Skip "why."</b> It sounds like an accusation. "What's been holding this up?" works better than "Why haven't you decided?"</li>
+<li><b>Aim for "That's right."</b> Summarize their situation so well they say it. "You're right" usually means they want you to stop.</li>
+</ul>`,
+  drill:"On your next call, use one mirror and one label on purpose. Afterward, log in the Debrief what they said right after each one."},
+{ id:"qualify", title:"Qualify early: pain, budget, decision",
+  source:"Sandler Selling System",
+  body:`<p>Before you write a proposal, know three things:</p>
+<ul>
+<li><b>Pain:</b> the real problem, in their words.</li>
+<li><b>Budget:</b> is there money, and roughly how much. If there is no budget, you are educating, not selling. That can still be worth doing, but call it what it is.</li>
+<li><b>Decision:</b> who signs, who else has a say, and when it gets decided.</li>
+</ul>
+<p>For schools and cities, the budget follows the fiscal year and big spends may need board or council approval. Ask: "Who besides you needs to be comfortable with this?" and "When does something like this usually get approved?"</p>`,
+  drill:"For every open opportunity, write what you know about pain, budget, and decision. Each blank is your next question."},
+{ id:"public", title:"Rules for schools and cities",
+  source:"Dallas ISD Board Policy CHE (Local) restricted contact period; San Antonio ISD blackout period notices",
+  body:`<p>Many Texas districts limit contact while a bid is open. For example, Dallas ISD's restricted contact period starts when an RFP or bid is issued and runs until the award. San Antonio ISD's blackout period also starts on the posting date and ends at award. During that time you talk only to the contact named in the solicitation.</p>
+<p>What that means for relationships:</p>
+<ul>
+<li>Build them <b>between</b> solicitations. Attend events, deliver great work, send useful things.</li>
+<li>When a bid is open, go through procurement only. Reaching out to the coach or principal about it can hurt you.</li>
+<li>Rules differ by district. Read the solicitation and the district's vendor page each time.</li>
+</ul>`,
+  drill:"For each district or city you're pursuing, note in their People entry whether a bid is open right now and who the named contact is."},
+{ id:"keep", title:"The next sale starts after the event",
+  source:"Frederick Reichheld, Bain & Company (Harvard Business Review); Sandler post-sell step",
+  body:`<p>Reichheld's research found that raising customer retention by 5% raised profits by 25% to 95%, depending on the industry. It's a wide range, but the direction is clear: keeping clients is a big lever.</p>
+<p>Habits that help:</p>
+<ul>
+<li>Send a short recap soon after each event: what went well, anything you fixed, one thing you'd suggest for next time.</li>
+<li>Ask what they would change. Then change it and tell them you did.</li>
+<li>Get the next date on the calendar before the current one ends.</li>
+<li>Check in when you <i>don't</i> need anything. Send something useful.</li>
+</ul>`,
+  drill:"Write a recap message you can reuse after every event. Five sentences or fewer. Save it in Practice notes."},
+{ id:"intro", title:"Ask for introductions",
+  source:"Builds on the trust and post-sell lessons",
+  body:`<p>The best time to ask is right after they tell you something went well. Make the ask specific so it is easy to answer.</p>
+<div class="quote">"I'm really glad that went well. Is there another athletic director or venue manager you think should have this kind of night? I'd be glad to buy you both lunch."</div>
+<ul>
+<li>Track who refers you. Thank them every time, and tell them how it turned out.</li>
+<li>Partners count too: companies bidding on work that need your piece of it.</li>
+</ul>`,
+  drill:"Pick two happy clients. Write the exact sentence you will use to ask each one for an introduction."},
+{ id:"lanes", title:"Keep each brand in its own lane",
+  source:"Your own business structure",
+  body:`<ul>
+<li><b>ADV Media</b> does the production work.</li>
+<li><b>Valencia Brown</b> gives advice and brand strategy only. No production.</li>
+<li><b>Terciopelo Media</b> stays separate. Discretion is part of what clients are buying.</li>
+</ul>
+<p>Each one needs its own short intro and its own people list. In this app, Terciopelo people are hidden unless you turn them on in Data.</p>`,
+  drill:"Write one plain sentence for each brand that you would say when someone asks what it does."}
+];
+
+/* ---------- question bank ---------- */
+const QBANK = {
+  adv:{
+    S:["How are your events staffed and produced today?","What does a typical season look like for your venue?"],
+    P:["Where does production tend to break down?","What do you wish your current setup did that it doesn't?"],
+    I:["When a crew call goes short, what happens to the event and to you?","How does a rough broadcast land with parents, admin, or sponsors?"],
+    N:["If every call were filled and you never had to think about it, what would that free up?","What would it mean for you if the broadcast looked like TV every week?"]
+  },
+  vb:{
+    S:["How do people find you today?","Who is your best client, and what do they have in common?"],
+    P:["Where do people get confused about what you do?","What part of growing this feels stuck?"],
+    I:["What is that confusion costing you in leads or pricing?","How long can things stay like this before it really hurts?"],
+    N:["If the right clients understood you in one sentence, what changes?","What would a clear brand let you charge or say no to?"]
+  },
+  terc:{
+    S:["What made you start thinking about a session now?","Have you done anything like this before?"],
+    P:["What part of it makes you nervous?","What would you not want this to feel like?"],
+    I:["How would it feel if the photos didn't feel like you?",""],
+    N:["What would you want to feel when you see the final images?","Who are these for, and what do you want them to say?"]
+  }
+};
+
+/* ---------- state + storage ---------- */
+const LS_KEY = "clienting.v1";
+const blank = () => ({people:[], inbox:[], lessons:{}, drills:{}, notes:"", settings:{theme:"auto", brand:"all", showTerc:false, shareBlueMem:true}, updated:0});
+let S = blank();
+let db=null, uid=null, docRef=null, remoteOK=false;
+let saveTimer=null, writing=false, pending=false;
+
+function loadLocal(){ try{ const r=localStorage.getItem(LS_KEY); if(r) S=Object.assign(blank(),JSON.parse(r)); }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function save(){
+  S.updated=Date.now(); saveLocal();
+  clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,900);
+}
+async function pushRemote(){
+  if(!remoteOK) return;
+  if(writing){ pending=true; return; }
+  writing=true;
+  try{ await docRef.set({json:JSON.stringify(S), updated:S.updated}); setSync("Saved to your account"); }
+  catch(e){ setSync("Saved on this device only"); if(e&&e.code==="invalid_argument") remoteOK=false; }
+  writing=false;
+  if(pending){ pending=false; pushRemote(); }
+}
+function setSync(t){ const el=document.getElementById("syncNote"); if(el) el.textContent=t; syncText=t; }
+let syncText="Saved on this device";
+
+async function initRemote(){
+  try{
+    if(!window.claude||!window.claude.use) return;
+    const u = await window.claude.use("user"); if(!u) return;
+    uid = await u.id(); if(!uid) return;
+    db = await window.claude.use("db"); if(!db) return;
+    docRef = db.doc("data/users/"+uid+"/state");
+    const snap = await docRef.get();
+    remoteOK=true;
+    if(snap.exists){
+      const d=snap.data(); let remote=null;
+      try{ remote=JSON.parse(d.json); }catch(e){}
+      if(remote && (remote.updated||0) >= (S.updated||0)){ S=Object.assign(blank(),remote); saveLocal(); render(); }
+      else if(S.updated) pushRemote();
+    } else if(S.updated){ pushRemote(); }
+    setSync("Saved to your account");
+  }catch(e){ setSync("Saved on this device only"); }
+}
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uidGen=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+const today=()=>new Date().toISOString().slice(0,10);
+const daysSince=d=>d?Math.floor((Date.now()-new Date(d+"T12:00:00").getTime())/86400000):null;
+const fmtDate=d=>d?new Date(d+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}):"";
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1600); }
+function stageName(id){ return (STAGES.find(s=>s.id===id)||{}).name||id; }
+function brandOK(b){ if(b==="terc" && !S.settings.showTerc) return false; return S.settings.brand==="all"||S.settings.brand===b; }
+function visiblePeople(){ return S.people.filter(p=>brandOK(p.brand)); }
+function lastTouch(p){ return p.touches&&p.touches.length? p.touches[0].d : null; }
+function readyForTouch(p){ const d=daysSince(lastTouch(p)); return d===null || d>=Number(p.cadence||30); }
+
+/* ---------- theme + brand filter ---------- */
+function applyTheme(){
+  const t=S.settings.theme; let mode=t;
+  if(t==="auto") mode = matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+  document.documentElement.setAttribute("data-theme",mode);
+  $("#themeSel").value=t;
+}
+function fillBrandFilter(){
+  const sel=$("#brandFilter"); const opts=[["all","All businesses"],["adv","ADV Media"],["vb","Valencia Brown"]];
+  if(S.settings.showTerc) opts.push(["terc","Terciopelo Media"]);
+  if(!S.settings.showTerc && S.settings.brand==="terc") S.settings.brand="all";
+  sel.innerHTML=opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("");
+  sel.value=S.settings.brand;
+}
+$("#themeSel").onchange=e=>{S.settings.theme=e.target.value; applyTheme(); save();};
+$("#brandFilter").onchange=e=>{S.settings.brand=e.target.value; save(); render();};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyTheme);
+
+/* ---------- dialog ---------- */
+function openDlg(title, bodyHTML, buttons){
+  $("#dlgTitle").textContent=title; $("#dlgBody").innerHTML=bodyHTML;
+  const f=$("#dlgFoot"); f.innerHTML="";
+  buttons.forEach(b=>{ const el=document.createElement("button"); el.className="btn "+(b.cls||""); el.textContent=b.label;
+    el.onclick=()=>{ if(b.fn && b.fn()===false) return; $("#dlg").close(); }; f.appendChild(el); });
+  $("#dlg").showModal();
+}
+
+/* ---------- views ---------- */
+const VIEWS={today:vToday,people:vPeople,learn:vLearn,practice:vPractice,blue:vBlue,data:vData};
+let view="today";
+function route(){ const h=(location.hash||"#today").slice(1); view=VIEWS[h]?h:"today"; render(); }
+window.addEventListener("hashchange",route);
+function render(){
+  fillBrandFilter();
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===view));
+  const m=$("#main"); m.innerHTML=""; VIEWS[view](m);
+}
+
+/* Today */
+function vToday(m){
+  const ready=visiblePeople().filter(readyForTouch).sort((a,b)=>(daysSince(lastTouch(b))??9999)-(daysSince(lastTouch(a))??9999));
+  const nextLesson=LESSONS.find(l=>(S.lessons[l.id]||"not started")!=="done");
+  const inbox=S.inbox;
+  m.innerHTML=`
+  <div class="card">
+    <h3>Quick note</h3>
+    <p class="muted small" style="margin:0 0 8px">Type anything. A name, a lead, something someone said. Sort it later or never.</p>
+    <textarea id="cap" placeholder="Met the new venue GM at the Arlington show, wants a call after the holidays"></textarea>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="capSave">Save note</button><span class="sync" id="syncNote">${esc(syncText)}</span></div>
+  </div>
+  ${inbox.length?`<div class="card"><h3>Notes</h3><div class="list">${inbox.map(n=>`
+    <div class="item"><div class="grow"><div>${esc(n.text)}</div><div class="muted small">${fmtDate(n.d)}</div></div>
+    <button class="btn mini" data-attach="${n.id}">Add to a person</button><button class="btn ghost mini" data-del="${n.id}">Remove</button></div>`).join("")}</div></div>`:""}
+  <div class="card">
+    <h3>Ready for a touch</h3>
+    <p class="muted small" style="margin:0 0 6px">People whose usual check-in time has come around. A short useful message counts.</p>
+    <div class="list">${ready.length?ready.map(p=>{const d=daysSince(lastTouch(p));return `
+      <div class="item"><div class="grow clickable" data-open="${p.id}"><b>${esc(p.name)}</b> <span class="muted">${esc(p.org||"")}</span>
+      <div class="small muted"><span class="dot"></span>${d===null?"No touches logged yet":"Last touch "+d+" days ago"} · every ${p.cadence} days · ${stageName(p.stage)}</div></div>
+      <button class="btn mini" data-touch="${p.id}">Log touch</button></div>`}).join(""):`<div class="empty">Nobody right now.</div>`}</div>
+  </div>
+  ${nextLesson?`<div class="card clickable" id="nextLesson"><span class="pill">${S.lessons[nextLesson.id]||"not started"}</span>
+    <h3 style="margin-top:8px">This week: ${esc(nextLesson.title)}</h3><div class="muted small">${esc(nextLesson.source)}</div></div>`:
+    `<div class="card"><h3>All lessons done</h3><p class="muted">Go back through any of them, or practice with Blue Bonnet.</p></div>`}
+  `;
+  $("#capSave").onclick=()=>{ const t=$("#cap").value.trim(); if(!t) return; S.inbox.unshift({id:uidGen(),d:today(),text:t}); save(); render(); toast("Saved"); };
+  m.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{S.inbox=S.inbox.filter(n=>n.id!==b.dataset.del); save(); render();});
+  m.querySelectorAll("[data-attach]").forEach(b=>b.onclick=()=>attachNote(b.dataset.attach));
+  m.querySelectorAll("[data-touch]").forEach(b=>b.onclick=()=>logTouch(b.dataset.touch));
+  m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>personDetail(b.dataset.open));
+  const nl=$("#nextLesson"); if(nl) nl.onclick=()=>{location.hash="#learn"; setTimeout(()=>openLesson(nextLesson.id),0);};
+}
+function attachNote(nid){
+  const n=S.inbox.find(x=>x.id===nid); const ppl=visiblePeople();
+  openDlg("Add note to a person",`<p>${esc(n.text)}</p><label>Person</label><select id="anP"><option value="__new">New person…</option>${ppl.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select>`,
+  [{label:"Cancel"},{label:"Add",cls:"primary",fn:()=>{
+    const v=$("#anP").value;
+    if(v==="__new"){ setTimeout(()=>editPerson(null,{notes:n.text},()=>{S.inbox=S.inbox.filter(x=>x.id!==nid);}),0); return; }
+    const p=S.people.find(x=>x.id===v); p.notes=(p.notes?p.notes+"\n":"")+fmtDate(n.d)+": "+n.text;
+    S.inbox=S.inbox.filter(x=>x.id!==nid); save(); render(); toast("Added");
+  }}]);
+}
+
+/* People */
+let peopleSearch="";
+function vPeople(m){
+  const ppl=visiblePeople().filter(p=>!peopleSearch||(p.name+" "+(p.org||"")+" "+(p.notes||"")).toLowerCase().includes(peopleSearch.toLowerCase()));
+  const byStage=STAGES.map(s=>({s,list:ppl.filter(p=>p.stage===s.id)})).filter(g=>g.list.length);
+  m.innerHTML=`<div class="row" style="margin-bottom:12px"><input type="text" id="ps" placeholder="Search people" value="${esc(peopleSearch)}" style="flex:1;min-width:180px"><button class="btn primary" id="addP">Add person</button></div>
+  ${byStage.length?byStage.map(g=>`<div class="card"><h3>${g.s.name} <span class="muted small">${g.list.length}</span></h3><div class="list">${g.list.map(p=>{const d=daysSince(lastTouch(p));return `
+    <div class="item clickable" data-open="${p.id}"><div class="grow"><b>${esc(p.name)}</b> <span class="muted">${esc(p.org||"")}</span>
+    <div class="small muted">${BRANDS[p.brand].name} · ${d===null?"no touches yet":"last touch "+d+" days ago"}</div></div>
+    ${readyForTouch(p)?`<span class="pill amber">ready for a touch</span>`:""}</div>`}).join("")}</div></div>`).join(""):
+    `<div class="card"><p class="muted">No people yet. Add your current clients first, then the people you want to work with.</p></div>`}`;
+  $("#ps").oninput=e=>{peopleSearch=e.target.value; const pos=e.target.selectionStart; render(); const el=$("#ps"); el.focus(); el.setSelectionRange(pos,pos);};
+  $("#addP").onclick=()=>editPerson(null);
+  m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>personDetail(b.dataset.open));
+}
+function editPerson(id, preset, after){
+  const p=id?S.people.find(x=>x.id===id):Object.assign({name:"",org:"",role:"",brand:S.settings.brand!=="all"?S.settings.brand:"adv",stage:"lead",cadence:14,cares:"",notes:"",contact:""},preset||{});
+  const brandOpts=Object.entries(BRANDS).filter(([k])=>k!=="terc"||S.settings.showTerc||p.brand==="terc").map(([k,v])=>`<option value="${k}" ${p.brand===k?"selected":""}>${v.name}</option>`).join("");
+  openDlg(id?"Edit person":"Add person",`
+    <div class="grid2"><div><label>Name</label><input type="text" id="fN" value="${esc(p.name)}"></div>
+    <div><label>Organization</label><input type="text" id="fO" value="${esc(p.org)}"></div>
+    <div><label>Role</label><input type="text" id="fR" value="${esc(p.role)}"></div>
+    <div><label>Phone or email</label><input type="text" id="fC" value="${esc(p.contact)}"></div>
+    <div><label>Business</label><select id="fB">${brandOpts}</select></div>
+    <div><label>Stage</label><select id="fS">${STAGES.map(s=>`<option value="${s.id}" ${p.stage===s.id?"selected":""}>${s.name}</option>`).join("")}</select></div>
+    <div><label>Check in every (days)</label><input type="number" id="fD" min="1" value="${esc(p.cadence)}"></div></div>
+    <label>What they care about</label><textarea id="fW" placeholder="Their goals, pressures, what a great night looks like to them">${esc(p.cares)}</textarea>
+    <label>Notes</label><textarea id="fX">${esc(p.notes)}</textarea>`,
+  [...(id?[{label:"Delete",cls:"ghost",fn:()=>{ setTimeout(()=>confirmDel(id),0); }}]:[]),{label:"Cancel"},{label:"Save",cls:"primary",fn:()=>{
+    const name=$("#fN").value.trim(); if(!name){toast("Add a name"); return false;}
+    const o={name,org:$("#fO").value.trim(),role:$("#fR").value.trim(),contact:$("#fC").value.trim(),brand:$("#fB").value,stage:$("#fS").value,cadence:Math.max(1,Number($("#fD").value)||30),cares:$("#fW").value,notes:$("#fX").value};
+    if(id) Object.assign(p,o); else S.people.push(Object.assign({id:uidGen(),touches:[],preps:[],debriefs:[],created:today()},o));
+    if(after) after(); save(); render(); toast("Saved");
+  }}]);
+  $("#fS").onchange=e=>{ if(!id){ const s=STAGES.find(x=>x.id===e.target.value); $("#fD").value=s.cadence; } };
+}
+function confirmDel(id){
+  const p=S.people.find(x=>x.id===id);
+  openDlg("Delete "+p.name+"?",`<p>This removes their notes, touches, and debriefs.</p>`,[{label:"Keep"},{label:"Delete",cls:"primary",fn:()=>{S.people=S.people.filter(x=>x.id!==id); save(); render();}}]);
+}
+function logTouch(id){
+  const p=S.people.find(x=>x.id===id);
+  openDlg("Log a touch with "+p.name,`
+    <div class="grid2"><div><label>Type</label><select id="tT">${TOUCH_TYPES.map(t=>`<option>${t}</option>`).join("")}</select></div>
+    <div><label>Date</label><input type="date" id="tD" value="${today()}"></div></div>
+    <label>What happened (optional)</label><textarea id="tN"></textarea>`,
+  [{label:"Cancel"},{label:"Save",cls:"primary",fn:()=>{
+    p.touches.unshift({d:$("#tD").value||today(),type:$("#tT").value,note:$("#tN").value.trim()});
+    p.touches.sort((a,b)=>b.d.localeCompare(a.d)); save(); render(); toast("Logged");
+  }}]);
+}
+function personDetail(id){
+  const p=S.people.find(x=>x.id===id);
+  const tl=[...p.touches.map(t=>({d:t.d,h:`<b>${esc(t.type)}</b>${t.note?": "+esc(t.note):""}`})),
+            ...(p.debriefs||[]).map(b=>({d:b.d,h:`<b>Debrief.</b> Problem: ${esc(b.pain||"?")} · Next: ${esc(b.next||"?")}`}))].sort((a,b)=>b.d.localeCompare(a.d));
+  openDlg(p.name,`
+    <div class="muted">${esc([p.role,p.org].filter(Boolean).join(", "))}</div>
+    <div class="row small" style="margin:8px 0"><span class="pill">${BRANDS[p.brand].name}</span><span class="pill">${stageName(p.stage)}</span><span class="pill">every ${p.cadence} days</span></div>
+    ${p.contact?`<div class="small">${esc(p.contact)}</div>`:""}
+    ${p.cares?`<label>What they care about</label><div style="white-space:pre-wrap">${esc(p.cares)}</div>`:""}
+    ${p.notes?`<label>Notes</label><div style="white-space:pre-wrap">${esc(p.notes)}</div>`:""}
+    <label>History</label>${tl.length?`<div class="list">${tl.map(t=>`<div class="item"><div class="grow">${t.h}<div class="muted small">${fmtDate(t.d)}</div></div></div>`).join("")}</div>`:`<div class="empty">Nothing logged yet.</div>`}`,
+  [{label:"Edit",fn:()=>{setTimeout(()=>editPerson(id),0);}},{label:"Practice with Blue",fn:()=>{blueCtx.person=id; location.hash="#blue";}},{label:"Log touch",cls:"primary",fn:()=>{setTimeout(()=>logTouch(id),0);}}]);
+}
+
+/* Learn */
+function vLearn(m){
+  const done=LESSONS.filter(l=>S.lessons[l.id]==="done").length;
+  m.innerHTML=`<h2>Lessons</h2><p class="muted">One a week is plenty. Each one ends with a drill you do with a real client. ${done} of ${LESSONS.length} done.</p>
+  <div class="card list">${LESSONS.map((l,i)=>`<div class="item clickable" data-l="${l.id}"><div class="muted" style="width:22px">${i+1}</div>
+  <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${esc(l.source)}</div></div><span class="pill">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
+  m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(b.dataset.l));
+}
+function openLesson(id){
+  const l=LESSONS.find(x=>x.id===id); const st=S.lessons[id]||"not started";
+  openDlg(l.title,`<div class="muted small">Source: ${esc(l.source)}</div><div class="lesson-body">${l.body}</div>
+    <div class="card" style="margin-top:12px"><h3>Drill</h3><p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea></div>
+    <label>Status</label><div class="seg" id="stSeg">${STATUS.map(s=>`<button data-s="${s}" class="${s===st?"on":""}">${s}</button>`).join("")}</div>`,
+  [{label:"Ask Blue about this",fn:()=>{saveDrill(id); blueCtx.lesson=id; location.hash="#blue";}},{label:"Save",cls:"primary",fn:()=>{saveDrill(id); render();}}]);
+  document.querySelectorAll("#stSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#stSeg button").forEach(x=>x.classList.remove("on")); b.classList.add("on");});
+}
+function saveDrill(id){
+  S.drills[id]=$("#drillTxt").value; const on=document.querySelector("#stSeg button.on"); if(on) S.lessons[id]=on.dataset.s;
+  if(S.drills[id] && (S.lessons[id]||"not started")==="not started") S.lessons[id]="in progress";
+  save(); toast("Saved");
+}
+
+/* Practice */
+let practiceMode="prep";
+function vPractice(m){
+  const ppl=visiblePeople();
+  const pOpts=`<option value="">Pick a person</option>`+ppl.map(p=>`<option value="${p.id}">${esc(p.name)}${p.org?" · "+esc(p.org):""}</option>`).join("");
+  const qb=Object.entries(QBANK).filter(([k])=>brandOK(k));
+  m.innerHTML=`<div class="seg" style="margin-bottom:14px">${[["prep","Before a call"],["debrief","After a call"],["bank","Question bank"],["notes","My scripts"]].map(([k,v])=>`<button data-m="${k}" class="${practiceMode===k?"on":""}">${v}</button>`).join("")}</div>
+  <div id="pBody"></div>`;
+  m.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{practiceMode=b.dataset.m; render();});
+  const pb=$("#pBody");
+  if(practiceMode==="prep"){
+    pb.innerHTML=`<div class="card"><h3>Call prep</h3><p class="muted small">Five minutes before any call or meeting.</p>
+    <label>Who</label><select id="prP">${pOpts}</select>
+    <label>Up-front contract: purpose, time, and what happens at the end</label><textarea id="prU" placeholder="20 minutes to understand their season. Fine to say not a fit. If it is, we pick a next step."></textarea>
+    <label>Situation question (only if you couldn't look it up)</label><input type="text" id="prS">
+    <label>Problem question</label><input type="text" id="prPr">
+    <label>Implication question</label><input type="text" id="prI">
+    <label>Need-payoff question</label><input type="text" id="prN">
+    <label>A label to try ("It sounds like…")</label><input type="text" id="prL">
+    <label>What I still need to learn about budget and who decides</label><input type="text" id="prB">
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="prSave">Save to person</button><button class="btn" id="prBlue">Rehearse with Blue</button></div></div>`;
+    const collect=()=>({d:today(),ufc:$("#prU").value,S:$("#prS").value,P:$("#prPr").value,I:$("#prI").value,N:$("#prN").value,label:$("#prL").value,bd:$("#prB").value});
+    $("#prSave").onclick=()=>{const id=$("#prP").value; if(!id){toast("Pick a person");return;} const p=S.people.find(x=>x.id===id); (p.preps=p.preps||[]).unshift(collect()); save(); toast("Saved to "+p.name);};
+    $("#prBlue").onclick=()=>{blueCtx.person=$("#prP").value||null; blueCtx.prep=collect(); blueMode="roleplay"; location.hash="#blue";};
+  } else if(practiceMode==="debrief"){
+    pb.innerHTML=`<div class="card"><h3>Debrief</h3><p class="muted small">Right after. Logs a touch too.</p>
+    <label>Who</label><select id="dbP">${pOpts}</select>
+    <label>The problem, in their words</label><textarea id="dbPain"></textarea>
+    <div class="grid2"><div><label>Budget</label><input type="text" id="dbBud" placeholder="Known, rough number, or unknown"></div>
+    <div><label>Who decides, and when</label><input type="text" id="dbDec"></div></div>
+    <label>Next step we agreed on</label><input type="text" id="dbNext">
+    <label>Did I get a "that's right"? What did I say right before it?</label><input type="text" id="dbTR">
+    <label>One thing to try next time</label><input type="text" id="dbTry">
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="dbSave">Save debrief</button><button class="btn" id="dbBlue">Talk it through with Blue</button></div></div>`;
+    const collect=()=>({d:today(),pain:$("#dbPain").value,budget:$("#dbBud").value,decision:$("#dbDec").value,next:$("#dbNext").value,tr:$("#dbTR").value,try:$("#dbTry").value});
+    $("#dbSave").onclick=()=>{const id=$("#dbP").value; if(!id){toast("Pick a person");return;} const p=S.people.find(x=>x.id===id); const b=collect();
+      (p.debriefs=p.debriefs||[]).unshift(b); p.touches.unshift({d:b.d,type:"Call",note:"Debrief saved"}); save(); toast("Saved to "+p.name);};
+    $("#dbBlue").onclick=()=>{blueCtx.person=$("#dbP").value||null; blueCtx.debrief=collect(); blueMode="mentor"; location.hash="#blue";};
+  } else if(practiceMode==="bank"){
+    const lab={S:"Situation",P:"Problem",I:"Implication",N:"Need-payoff"};
+    pb.innerHTML=qb.map(([k,q])=>`<div class="card"><h3>${BRANDS[k].name}</h3>${Object.entries(q).map(([t,arr])=>`<label>${lab[t]}</label><ul style="margin:0 0 0 20px;padding:0">${arr.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`).join("")}</div>`).join("")+
+    `<div class="card"><h3>Listening phrases</h3><ul style="margin:0 0 0 20px;padding:0"><li>It sounds like…</li><li>It seems like…</li><li>It looks like…</li><li>What's the biggest challenge you're facing with this?</li><li>How would you like to handle that?</li><li>What would need to be true for this to be an easy yes?</li><li>What's been holding this up?</li></ul></div>`;
+  } else {
+    pb.innerHTML=`<div class="card"><h3>My scripts</h3><p class="muted small">Your openers, recap template, intro asks. Anything you reuse.</p><textarea id="scr" style="min-height:300px">${esc(S.notes)}</textarea><div class="row" style="margin-top:8px"><button class="btn primary" id="scrSave">Save</button></div></div>`;
+    $("#scrSave").onclick=()=>{S.notes=$("#scr").value; save(); toast("Saved");};
+  }
+}
+
+/* Blue Bonnet */
+let blueMode="mentor", blueMsgs=[], blueBusy=false, sampleFn=null, blueCtx={};
+const SCENARIOS={
+  adv:[["ad","A high school athletic director whose district is unhappy with its current broadcast vendor"],["venue","A venue general manager who needs reliable crews for touring shows"],["corp","A corporate event planner booking a one-day conference"],["partner","A larger company bidding on a venue contract that may need an AV production partner"]],
+  vb:[["small","A small business owner who says people don't understand what they do"],["creator","A performer who wants a brand but isn't sure they can pay for strategy"]],
+  terc:[["boudoir","A first-time boudoir client who is interested but nervous"],["show","A venue owner considering hosting a burlesque night"]]
+};
+let scenario="ad";
+function blueInstructions(){
+  let ctx="";
+  if(blueCtx.person){ const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctx+=`\nPerson Dusty is working with: ${p.name}, ${p.role||""} at ${p.org||"unknown org"} (${BRANDS[p.brand].name}, stage: ${stageName(p.stage)}). What they care about: ${p.cares||"not noted"}. Notes: ${(p.notes||"").slice(0,1200)}`; }
+  if(blueCtx.lesson){ const l=LESSONS.find(x=>x.id===blueCtx.lesson); ctx+=`\nDusty is working on the lesson "${l.title}" (${l.source}). His drill answer: ${S.drills[l.id]||"none yet"}`; }
+  if(blueCtx.prep) ctx+=`\nHis call prep: ${JSON.stringify(blueCtx.prep)}`;
+  if(blueCtx.debrief) ctx+=`\nHis call debrief: ${JSON.stringify(blueCtx.debrief)}`;
+  const bm=blueMemory();
+  if(bm && blueMode!=="roleplay") ctx+=`\nBackground from Blue Bonnet's own memory of Dusty. Use it only where it changes your answer. Never recite it, and never bring up personal or sensitive items unless he does:\n- ${bm.facts.join("\n- ")}${bm.threads.length?"\nOpen threads: "+bm.threads.join("; "):""}`;
+  const common=`You are Blue Bonnet, a business mentor inside Dusty's app "Clienting". Dusty runs ADV Media (live event and broadcast production in DFW, works with school districts, venues, and companies), Valencia Brown (consulting and brand strategy, advisory only, no production), and Terciopelo Media (boudoir and burlesque, kept separate and discreet). He has about 20 years in live events and wants to get better at finding clients and building lasting relationships.
+Ground your coaching in these frameworks and name them when you use them: the Trust Equation from The Trusted Advisor (credibility, reliability, intimacy over self-orientation); Sandler (up-front contract, pain, budget, decision, post-sell); SPIN Selling (situation, problem, implication, need-payoff questions); Chris Voss (mirroring, labeling, calibrated what/how questions, aiming for "that's right").
+Rules: Write in plain, short sentences. Never use em dashes or en dashes; use commas, periods, or colons. No hype or marketing language. No guilt words like overdue or behind. Keep replies short: usually under 150 words. Do not invent facts about specific organizations, laws, prices, or procurement rules. If something depends on a specific district's or company's policy, say he should check it, and say how. Hard boundary, never weakened: you never give a directive verdict about his personal relationships or mental health, and you never diagnose. Say plainly when something is general sales practice versus specific to his situation. Help him reach his own conclusions: ask what he thinks before giving your view on judgment calls, but give direct, specific feedback on technique when asked.`;
+  if(blueMode==="roleplay"){
+    const sc=(Object.values(SCENARIOS).flat().find(s=>s[0]===scenario)||SCENARIOS.adv[0])[1];
+    return common+`\nMODE: Role-play. Play this prospect realistically: ${sc}. Stay in character. Be a real person: busy, a little guarded, with a real problem and a real budget limit you only reveal if he earns it with good questions and listening. Reply in 1 to 4 sentences as the prospect. If Dusty writes "FEEDBACK", step out of character and coach him: what worked, what to try, and one rewritten line, citing the framework.`+ctx;
+  }
+  return common+`\nMODE: Mentor. Talk through his situation, prep, or debrief with him. End most replies with one question that moves him forward.`+ctx;
+}
+function vBlue(m){
+  const scen=Object.entries(SCENARIOS).filter(([k])=>brandOK(k)).flatMap(([k,a])=>a.map(s=>({k,id:s[0],t:s[1]})));
+  if(!scen.find(s=>s.id===scenario) && scen.length) scenario=scen[0].id;
+  const ctxBits=[]; if(blueCtx.person){const p=S.people.find(x=>x.id===blueCtx.person); if(p) ctxBits.push(p.name);} if(blueCtx.lesson) ctxBits.push("lesson: "+LESSONS.find(x=>x.id===blueCtx.lesson).title); if(blueCtx.prep) ctxBits.push("call prep"); if(blueCtx.debrief) ctxBits.push("debrief");
+  m.innerHTML=`<div class="card">
+    <div class="row"><span class="bb">✿ Blue Bonnet</span><span class="spacer"></span>
+    <div class="seg">${[["mentor","Mentor me"],["roleplay","Role-play a client"]].map(([k,v])=>`<button data-bm="${k}" class="${blueMode===k?"on":""}">${v}</button>`).join("")}</div></div>
+    ${blueMode==="roleplay"?`<label>Who Blue plays</label><select id="scSel">${scen.map(s=>`<option value="${s.id}" ${s.id===scenario?"selected":""}>${BRANDS[s.k].name}: ${esc(s.t)}</option>`).join("")}</select>
+      <p class="muted small" style="margin:6px 0 0">Open the conversation like it's real. Type <b>FEEDBACK</b> anytime to get coached.</p>`:
+      `<p class="muted small" style="margin:8px 0 0">Bring a real situation: a client gone quiet, a pricing talk, a bid you're unsure about, a call you want to rehearse.</p>`}
+    ${ctxBits.length?`<div class="row small" style="margin-top:8px"><span class="muted">Blue can see:</span>${ctxBits.map(b=>`<span class="pill">${esc(b)}</span>`).join("")}<button class="btn ghost mini" id="clrCtx">Clear</button></div>`:""}
+  </div>
+  <div class="card"><div class="chat" id="chat">${blueMsgs.length?blueMsgs.map(x=>`<div class="msg ${x.role==="user"?"me":"blue"}"><span class="who">${x.role==="user"?"You":(blueMode==="roleplay"?"Prospect (Blue)":"Blue Bonnet")}</span>${esc(x.content)}</div>`).join(""):`<div class="empty">${blueMode==="roleplay"?"Say hello the way you would on a real call.":"What are you working on?"}</div>`}</div>
+    <textarea id="bIn" placeholder="${blueMode==="roleplay"?"Hi, this is Dusty with ADV Media…":"Type here"}" style="margin-top:10px"></textarea>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="bSend">Send</button>${blueMode==="roleplay"?`<button class="btn" id="bFb">Get feedback</button>`:""}<button class="btn ghost" id="bNew">Start over</button><span class="muted small" id="bStat"></span></div>
+  </div>`;
+  m.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{ if(blueMode!==b.dataset.bm){blueMode=b.dataset.bm; blueMsgs=[];} render();});
+  const sc=$("#scSel"); if(sc) sc.onchange=e=>{scenario=e.target.value; blueMsgs=[]; render();};
+  const cc=$("#clrCtx"); if(cc) cc.onclick=()=>{blueCtx={}; render();};
+  $("#bNew").onclick=()=>{blueMsgs=[]; render();};
+  $("#bSend").onclick=()=>sendBlue($("#bIn").value);
+  const fb=$("#bFb"); if(fb) fb.onclick=()=>sendBlue("FEEDBACK");
+  $("#bIn").onkeydown=e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)) sendBlue($("#bIn").value); };
+  const ch=$("#chat"); ch.scrollTop=ch.scrollHeight;
+  if(!sampleFn) $("#bStat").textContent="Connecting to Blue…";
+}
+async function getSample(){
+  if(sampleFn) return sampleFn;
+  try{ if(window.claude&&window.claude.use){ sampleFn=await window.claude.use("sample"); } }catch(e){}
+  return sampleFn;
+}
+/* Real Blue Bonnet: when hosted on dustin12342986-hue.github.io next to blue-bonnet-kit.js,
+   Blue runs through the same kit, Cloudflare worker and gateway fallback as the other apps. */
+const BB_PROXY_URL="https://blue-bonnet-app-proxy.dustin12342986.workers.dev";
+const BB_GATEWAY_KEY="e368f85d1ce08cb81e252c1f9e31294b7d8dc88cf295be38";
+/* Shared memory: Clienting reads Blue Bonnet's memory (same github.io origin) but never writes to it.
+   Mentor conversations are left in a handoff key; the beta files them with its own recordEpisode(). */
+const BB_MEM_KEYS=["bluebonnet-memory-beta","bluebonnet-memory-v1"];
+const BB_HANDOFF_KEY="bluebonnet-handoff-clienting";
+function blueMemory(){
+  if(S.settings.shareBlueMem===false) return null;
+  for(const k of BB_MEM_KEYS){
+    try{
+      const raw=localStorage.getItem(k); if(!raw) continue;
+      const m=JSON.parse(raw); const now=Date.now();
+      const amp=f=>{const hl=21*(1+Math.log2(Math.max(1,f.hits||1))); const d=Math.max(0,(now-(f.lastHeard||now))/86400000); return Math.max(0,Math.min(1,(f.amplitude!=null?f.amplitude:1)*Math.pow(0.5,d/hl)));};
+      const facts=(m.facts||[]).filter(f=>f&&typeof f==="object"&&f.text).map(f=>({t:f.text,a:amp(f)})).filter(x=>x.a>=0.22).sort((a,b)=>b.a-a.a).slice(0,14).map(x=>x.t);
+      const threads=(m.openThreads||[]).slice(-5).map(t=>t.text).filter(Boolean);
+      if(facts.length||threads.length) return {key:k,facts,threads};
+    }catch(e){}
+  }
+  return null;
+}
+function handOff(turns){
+  if(S.settings.shareBlueMem===false) return;
+  try{
+    const list=JSON.parse(localStorage.getItem(BB_HANDOFF_KEY)||"[]");
+    list.push({id:"c"+Date.now()+Math.random().toString(36).slice(2,6),at:Date.now(),source:"clienting",turns});
+    while(JSON.stringify(list).length>200000) list.shift();
+    localStorage.setItem(BB_HANDOFF_KEY,JSON.stringify(list));
+  }catch(e){}
+}
+function kitReady(){ return typeof BBKit!=="undefined" && !!BBKit && typeof BBKit.ask==="function"; }
+if(kitReady()){ try{ BBKit.configure({anthropicProxyUrl:BB_PROXY_URL, gatewayKey:BB_GATEWAY_KEY, app:"clienting"}); }catch(e){} }
+async function sendBlueKit(text){
+  blueMsgs.push({role:"user",content:text}); blueBusy=true; render(); $("#bStat").textContent="Blue is thinking…";
+  const full=blueInstructions(); const cut=full.indexOf("\nMODE:");
+  const system=[{type:"text",text:full.slice(0,cut),cache_control:{type:"ephemeral"}},{type:"text",text:full.slice(cut)}];
+  const messages=blueMsgs.map(x=>({role:x.role,content:x.content}));
+  try{
+    const r=await BBKit.ask({system,messages,maxTokens:700,session:"clienting",onStatus:t=>{const el=$("#bStat"); if(el) el.textContent=t;}});
+    blueMsgs.push({role:"assistant",content:r.text||""}); blueBusy=false; render();
+    if(blueMode==="mentor" && r.text) handOff([{role:"user",text:"[Clienting, business mentoring] "+text},{role:"assistant",text:r.text}]);
+    if(r.usedBackup) $("#bStat").textContent="Answered by the backup brain";
+  }catch(e){
+    blueMsgs.pop(); blueBusy=false; render();
+    let msg="Blue couldn't answer. "; try{ msg+=BBKit.explainError?BBKit.explainError(e).message:String(e.message||e); }catch(_){ msg+=String(e.message||e); }
+    $("#bStat").textContent=msg;
+  }
+}
+async function sendBlue(text){
+  text=(text||"").trim(); if(!text||blueBusy) return;
+  if(kitReady()) return sendBlueKit(text);
+  const s=await getSample();
+  if(!s){ $("#bStat").textContent="Blue isn't available here. Open Clienting from GitHub Pages or its claude.ai link."; return; }
+  blueMsgs.push({role:"user",content:text}); blueBusy=true; render(); $("#bStat").textContent="Blue is thinking…";
+  const reply={role:"assistant",content:""}; blueMsgs.push(reply);
+  const who=blueMode==="roleplay"?"Prospect":"Blue";
+  const transcript=blueMsgs.slice(0,-1).map(x=>(x.role==="user"?"Dusty: ":who+": ")+x.content).join("\n\n");
+  const prompt=blueInstructions()+"\n\nConversation so far:\n"+transcript+"\n\nWrite only the next reply from "+(text==="FEEDBACK"?"Blue Bonnet as coach":who)+". No name prefix.";
+  try{
+    const label=blueMode==="roleplay"&&text!=="FEEDBACK"?"Prospect (Blue)":"Blue Bonnet";
+    const r=await s(prompt,{cache:false,modelTier:"default",onText:(ev)=>{reply.content=ev.text; const ch=$("#chat"); if(ch&&ch.lastElementChild) {ch.lastElementChild.innerHTML=`<span class="who">${label}</span>`+esc(ev.text); ch.scrollTop=ch.scrollHeight;}}});
+    reply.content=r.text;
+  }catch(e){
+    blueMsgs.pop();
+    const msg=e&&e.code==="rate_limited"?"Blue needs a minute. Try again shortly.":e&&e.code==="not_granted"?"Blue needs permission to run. Try again and allow it.":"Blue couldn't answer that one. Try again.";
+    blueBusy=false; render(); $("#bStat").textContent=msg; return;
+  }
+  blueBusy=false; render();
+}
+
+/* Data */
+function vData(m){
+  m.innerHTML=`<div class="card"><h3>Privacy</h3>
+    <label style="display:flex;gap:10px;align-items:center;color:var(--ink);font-size:16px"><input type="checkbox" id="tercT" ${S.settings.showTerc?"checked":""} style="width:auto"> Show Terciopelo Media people and lessons</label>
+    <p class="muted small">Off by default so it doesn't show up when you're working ADV or Valencia Brown in front of someone.</p></div>
+  <div class="card"><h3>Blue Bonnet's memory</h3>
+    <label style="display:flex;gap:10px;align-items:center;color:var(--ink);font-size:16px"><input type="checkbox" id="bmT" ${S.settings.shareBlueMem!==false?"checked":""} style="width:auto"> Let Blue use what she already knows about you, and remember mentoring talks</label>
+    <p class="muted small">${(()=>{const bm=blueMemory(); return kitReady()?(bm?"Connected to Blue Bonnet's memory ("+(bm.key.endsWith("beta")?"beta":"main app")+"). "+bm.facts.length+" things she knows are in reach.":"Running on Blue Bonnet. No memory found on this device yet. Open the Blue Bonnet beta here once."):"Shared memory works when Clienting runs from your GitHub Pages site next to the Blue Bonnet beta.";})()} Role-play sessions are never remembered.</p></div>
+  <div class="card"><h3>Where your data lives</h3><p class="muted"><span id="syncNote">${esc(syncText)}</span>. On claude.ai it saves privately to your account. On GitHub Pages it saves in this browser, so use Copy backup to move it between devices.</p></div>
+  <div class="card"><h3>Backup</h3><div class="row"><button class="btn" id="cp">Copy backup</button></div>
+    <label>Restore from a backup (paste it here)</label><textarea id="imp"></textarea><div class="row" style="margin-top:8px"><button class="btn" id="impB">Restore</button></div></div>`;
+  $("#bmT").onchange=e=>{S.settings.shareBlueMem=e.target.checked; save(); render();};
+  $("#tercT").onchange=e=>{S.settings.showTerc=e.target.checked; save(); render();};
+  $("#cp").onclick=async()=>{ try{ await navigator.clipboard.writeText(JSON.stringify(S)); toast("Copied"); }catch(e){ $("#imp").value=JSON.stringify(S); toast("Select the text below and copy it"); } };
+  $("#impB").onclick=()=>{ try{ const d=JSON.parse($("#imp").value); if(!d||!Array.isArray(d.people)) throw 0;
+    openDlg("Replace everything with this backup?",`<p>${d.people.length} people will replace what's here now.</p>`,[{label:"Cancel"},{label:"Restore",cls:"primary",fn:()=>{S=Object.assign(blank(),d); save(); applyTheme(); render(); toast("Restored");}}]);
+  }catch(e){ toast("That doesn't look like a backup"); } };
+}
+
+/* ---------- boot ---------- */
+loadLocal(); applyTheme(); route(); initRemote(); getSample();
+</script>
+</body>
+</html>
