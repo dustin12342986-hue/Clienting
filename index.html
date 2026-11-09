@@ -236,6 +236,27 @@ html[data-theme="mono-dark"] .reassure{background:var(--surface-2);color:var(--t
 .progress-bar{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
 .progress-bar>div{height:100%;background:var(--primary);border-radius:999px}
 
+/* masterclass */
+.vframe{position:relative;width:100%;max-width:720px;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--surface-2) center/cover no-repeat}
+.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vplay{position:absolute;inset:0;width:100%;height:100%;border:none;background:rgba(20,16,40,.18);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.vplay span{width:68px;height:68px;border-radius:50%;background:var(--primary);color:var(--on-primary);font-size:26px;display:flex;align-items:center;justify-content:center;padding-left:5px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.vnote{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--muted)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 18px}
+.step{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--surface);border:1.5px solid var(--border);font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.step.done{border-color:var(--done);color:var(--done);background:var(--done-bg)}
+.step.cur{border-color:var(--primary);color:var(--text)}
+.step .ck{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:10px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-head h3{margin:0;flex:1}
+.sec-done{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;margin:0}
+.sec-done input{width:18px;height:18px}
+.keylist{list-style:none;margin:0;padding:0}
+.keylist li{padding:10px 0 10px 34px;position:relative;font-size:17px;border-top:1px solid var(--border)}
+.keylist li:first-child{border-top:none}
+.keylist li b{position:absolute;left:0;top:10px;width:24px;height:24px;border-radius:50%;background:var(--surface-2);color:var(--primary-dark);font-size:13px;display:flex;align-items:center;justify-content:center}
+.focus-nav{display:flex;gap:10px;justify-content:space-between;margin-top:6px}
+
 /* chat */
 .chat{display:flex;flex-direction:column;gap:10px;max-height:56vh;overflow:auto;padding:4px}
 .msg{padding:10px 14px;border-radius:14px;max-width:88%;white-space:pre-wrap}
@@ -396,6 +417,61 @@ const LESSONS = [
   drill:"Write one plain sentence for each brand that you would say when someone asks what it does."}
 ];
 
+/* ---------- masterclass: videos and key ideas ---------- */
+// Every video below was checked to exist on YouTube on 2026-11-08. Embeds use
+// youtube-nocookie, load only when tapped (nothing autoplays), and ask YouTube
+// to show captions. A plain "Watch on YouTube" link is always shown too, since
+// some owners turn embedding off.
+const VIDEOS={
+ trust:[{id:"IbszigMFfxM",t:"The Sandpaper Story: being a trusted advisor",by:"Charles H. Green, co-author of The Trusted Advisor",tag:"Start here"},
+        {id:"05M-17-8KO8",t:"Understanding the Trust Equation and 12 trust tips",by:"Charles H. Green, TrustMatters webinar",tag:"Go deeper"}],
+ ufc:[{id:"WTZwyUeAI3o",t:"Elevating your up-front contract",by:"Danny Wood, Sandler",tag:"Start here"},
+      {id:"6JcMM4_CPSI",t:"When to use the up-front contract",by:"Charlotte Rodriguez, Sandler",tag:"Go deeper"}],
+ spin:[{id:"TSUeakjHYCE",t:"Neil Rackham explains the origins of SPIN Selling",by:"Neil Rackham, creator of SPIN Selling",tag:"Start here"},
+       {id:"z-l3npM7l3U",t:"Have SPIN problem questions changed?",by:"Neil Rackham, Huthwaite International",tag:"Go deeper"}],
+ listen:[{id:"SJ2az4HxlTs",t:"The mirroring technique",by:"Chris Voss",tag:"Start here"},
+         {id:"NruJ13iq0vQ",t:"Brandon and Chris Voss explain mirrors and labels",by:"Brandon and Chris Voss, The Black Swan Group",tag:"Go deeper"}],
+ qualify:[{id:"kC0RUsNzPCM",t:"Qualify hard, close easy",by:"Danny Wood, Sandler",tag:"Start here"},
+          {id:"7nATxlet1ms",t:"Tips for uncovering your prospect's budget",by:"Sandler",tag:"Go deeper"}],
+ public:[],
+ keep:[{id:"Woeqez3a75U",t:"Fred Reichheld on loyalty economics",by:"Fred Reichheld, co-author of Zero Defections",tag:"Start here"}],
+ intro:[{id:"gOOamfWXucs",t:"The power of referrals",by:"Fred Reichheld, creator of the Net Promoter Score",tag:"Start here"}],
+ lanes:[{id:"u4ZoJKF_VuA",t:"Start with why: how great leaders inspire action",by:"Simon Sinek, TEDxPugetSound",tag:"Start here"}]
+};
+const KEYS={
+ trust:["Trust has four parts: credibility, reliability, intimacy, and self-orientation.","The first three add up. Self-orientation divides everything.","Fastest win: make the conversation about them."],
+ ufc:["Agree out loud on what the meeting is for and how it ends.","Tell them a no is fine.","A clear no beats a long maybe."],
+ spin:["Ask before you pitch.","Go from how things are, to what's broken, to what it costs, to what fixing it is worth.","Let them say the value, not you."],
+ listen:["Mirror: repeat their last few words as a question, then wait.","Label: name what they seem to feel.","Ask what and how. Skip why."],
+ qualify:["Before a proposal, know the pain, the budget, and who decides.","Each blank is your next question.","No budget means you're educating, not selling yet."],
+ public:["While a bid is open, many districts limit contact to one named person.","Build relationships between bids.","Rules differ by district. Check each one."],
+ keep:["Keeping a good client is usually cheaper than finding a new one.","Send a recap soon after every event.","Book the next date before this one ends."],
+ intro:["Ask right after they say it went well.","Make the ask specific and easy.","Thank every referrer and tell them how it turned out."],
+ lanes:["ADV produces. Valencia Brown advises. Terciopelo stays separate.","Each brand gets its own one-sentence intro.","Lead with why you do it, then what you do."]
+};
+const STEPS=[["watch","Watch"],["key","Key idea"],["read","Read"],["try","Try it"],["do","Do it for real"],["blue","Practice"]];
+function lessonProg(id){ S.progress=S.progress||{}; return S.progress[id]=S.progress[id]||{steps:{},at:"watch"}; }
+function markStep(id,step,on){
+  const pr=lessonProg(id); pr.steps[step]=on; pr.at=step;
+  const avail=STEPS.filter(([k])=>k!=="watch"||(VIDEOS[id]||[]).length).map(x=>x[0]);
+  const n=avail.filter(k=>pr.steps[k]).length;
+  if(n===avail.length) S.lessons[id]="done"; else if(n>0 && (S.lessons[id]||"not started")!=="done") S.lessons[id]="in progress";
+  save();
+}
+const CAN_EMBED = !/claude\.ai|claudeusercontent/.test(location.hostname);
+function videoBlock(v){
+  const thumb=CAN_EMBED?`background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)`:"";
+  return `<div class="vid" data-vid="${v.id}">
+    <div class="vframe" style="${thumb}">${CAN_EMBED?`<button class="vplay" aria-label="Play ${esc(v.t)}"><span>▶</span></button>`:`<div class="vnote">Videos play on your GitHub Pages copy of Clienting. Here, use the link below.</div>`}</div>
+    <div class="row" style="margin-top:8px"><span class="pill">${esc(v.tag)}</span><b style="flex:1;min-width:200px">${esc(v.t)}</b></div>
+    <div class="muted small">${esc(v.by)} · <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">Watch on YouTube ↗</a></div></div>`;
+}
+function wireVideos(root){
+  root.querySelectorAll(".vid").forEach(el=>{ const b=el.querySelector(".vplay"); if(!b) return;
+    b.onclick=()=>{ const id=el.dataset.vid; const f=el.querySelector(".vframe");
+      f.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&cc_load_policy=1&rel=0&modestbranding=1&playsinline=1" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`; f.style.backgroundImage=""; }; });
+}
+
 /* ---------- library ---------- */
 const LIBRARY = [
  {id:"trust", title:"The Trusted Advisor", by:"David Maister, Charles Green and Robert Galford (2000). A 20th anniversary edition is in print.",
@@ -505,7 +581,7 @@ function lastTouch(p){ return p.touches&&p.touches.length? p.touches[0].d : null
 function readyForTouch(p){ const d=daysSince(lastTouch(p)); return d===null || d>=Number(p.cadence||30); }
 
 /* ---------- theme, icons, sidebar (same system as Adulting and Businessing) ---------- */
-const APP_VERSION="2026.11.07a";
+const APP_VERSION="2026.11.08a";
 const THEMES=[["hill-country","Hill Country"],["mono-light","Mono light"],["mono-dark","Mono dark"],["custom","Custom"]];
 function adultingLook(){
   try{ const a=JSON.parse(localStorage.getItem("adulting-state-v1")||"null"); const st=a&&a.settings; if(!st) return null;
@@ -566,7 +642,7 @@ function icon(key,size){
   if(look().iconStyle==="minimal") return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">'+(MINIMAL_ICON_SVGS[key]||"")+'</svg>';
   return '<span style="font-size:'+size+'px;line-height:1;display:inline-block">'+(EMOJI_ICONS[key]||"")+'</span>';
 }
-const NAV=[["today","Today"],["people","People"],["learn","Learn"],["practice","Practice"],["blue","Blue Bonnet"],["library","Library"],["data","Settings"]];
+const NAV=[["today","Today"],["people","People"],["learn","Masterclass"],["practice","Practice"],["blue","Blue Bonnet"],["library","Library"],["data","Settings"]];
 function renderNav(){
   const opts=[["all","All businesses"],["adv","ADV Media"],["vb","Valencia Brown"]];
   if(S.settings.showTerc) opts.push(["terc","Terciopelo Media"]);
@@ -720,31 +796,54 @@ function personDetail(id){
 function vLearn(m){
   if(lessonId) return vLesson(m,lessonId);
   const done=LESSONS.filter(l=>S.lessons[l.id]==="done").length;
-  m.innerHTML=`<h1>Learn</h1><p class="page-sub">One a week is plenty. Each lesson has something to try on the page, a drill with a real client, and the original source.</p>
+  const resume=LESSONS.find(l=>S.lessons[l.id]==="in progress");
+  m.innerHTML=`<h1>The Clienting masterclass</h1><p class="page-sub">Short videos and one idea at a time. Watch it, try it, then do it with a real client. One lesson a week is plenty.</p>
+  <div class="card"><h3>Made for how your brain works</h3><ul style="margin:6px 0 0 20px;padding:0"><li>Nothing autoplays. Captions are on.</li><li>Every lesson is cut into small steps. Check one off and you're done for the day if you want.</li><li>Turn on <b>One step at a time</b> in any lesson to see a single step and a Next button.</li><li>Your place is saved. Come back whenever.</li></ul></div>
+  ${resume?`<div class="card clickable" id="resume"><span class="pill partial">in progress</span><h3 style="margin-top:8px">Pick up where you left off: ${esc(resume.title)}</h3><div class="muted small">Next step: ${(STEPS.find(([k])=>k===(lessonProg(resume.id).at))||STEPS[0])[1]}</div></div>`:""}
   <div class="card"><div class="row"><b>${done} of ${LESSONS.length} done</b></div><div class="progress-bar"><div style="width:${Math.round(done/LESSONS.length*100)}%"></div></div></div>
   <div class="card list">${LESSONS.map((l,i)=>`<div class="item clickable" data-l="${l.id}"><div class="muted" style="width:22px">${i+1}</div>
-  <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${esc(l.source)}</div></div><span class="pill ${stClass(S.lessons[l.id])}">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
+  <div class="grow"><b>${esc(l.title)}</b><div class="muted small">${(VIDEOS[l.id]||[]).length?"▶ "+(VIDEOS[l.id]||[]).length+" video"+((VIDEOS[l.id]||[]).length>1?"s":"")+" · ":""}${esc(l.source)}</div></div><span class="pill ${stClass(S.lessons[l.id])}">${S.lessons[l.id]||"not started"}</span></div>`).join("")}</div>`;
   m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{location.hash="#lesson-"+b.dataset.l;});
+  const rs=$("#resume"); if(rs) rs.onclick=()=>{location.hash="#lesson-"+resume.id;};
 }
 function openLesson(id){ location.hash="#lesson-"+id; }
+let focusStep=null;
 function vLesson(m,id){
-  const i=LESSONS.findIndex(x=>x.id===id), l=LESSONS[i]; const st=S.lessons[id]||"not started";
+  const i=LESSONS.findIndex(x=>x.id===id), l=LESSONS[i];
   const prev=LESSONS[i-1], next=LESSONS[i+1];
-  m.innerHTML=`<div class="row" style="margin-bottom:10px"><a href="#learn" class="muted">← All lessons</a><span class="spacer"></span><span class="muted small">Lesson ${i+1} of ${LESSONS.length}</span></div>
-  <h1>${esc(l.title)}</h1><p class="page-sub">${esc(l.source)}</p>
-  <div class="card lesson-body"><h3>Read</h3>${l.body}</div>
-  <div class="card"><h3>Try it</h3><div id="tool"></div></div>
-  <div class="card"><h3>Drill with a real client</h3><p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea>
-    <div class="row" style="margin-top:10px"><div class="seg" id="stSeg">${STATUS.map(x=>`<button data-s="${x}" class="${x===st?"on":""}">${x}</button>`).join("")}</div><span class="spacer"></span><button class="btn primary" id="drSave">Save</button></div></div>
-  <div class="card"><h3>Practice with Blue</h3><p class="muted small" style="margin:0 0 8px">Blue plays a client, and her feedback is about this lesson's skill.</p>
-    <div class="row"><button class="btn" id="lBlueRP">Role-play this lesson</button><button class="btn ghost" id="lBlueM">Talk it through</button></div></div>
-  ${l.lib&&l.lib.length?`<div class="card"><h3>Read the source</h3>${libLinks(l.lib)}<p class="small" style="margin:8px 0 0"><a href="#library">All sources in the Library</a></p></div>`:""}
-  <div class="row">${prev?`<a class="btn" href="#lesson-${prev.id}">← ${esc(prev.title)}</a>`:""}<span class="spacer"></span>${next?`<a class="btn" href="#lesson-${next.id}">${esc(next.title)} →</a>`:""}</div>`;
-  document.querySelectorAll("#stSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#stSeg button").forEach(x=>x.classList.remove("on")); b.classList.add("on"); S.lessons[id]=b.dataset.s; save(); toast("Marked "+b.dataset.s);});
-  $("#drSave").onclick=()=>saveDrill(id);
-  $("#lBlueRP").onclick=()=>{saveDrill(id,true); blueCtx={lesson:id}; blueMode="roleplay"; blueMsgs=[]; location.hash="#blue";};
-  $("#lBlueM").onclick=()=>{saveDrill(id,true); blueCtx={lesson:id}; blueMode="mentor"; blueMsgs=[]; location.hash="#blue";};
-  (TOOLS[id]||(()=>{}))($("#tool"));
+  const pr=lessonProg(id); const vids=VIDEOS[id]||[];
+  const steps=STEPS.filter(([k])=>k!=="watch"||vids.length);
+  const focus=!!S.settings.oneStep;
+  if(focus && (!focusStep||focusStep.id!==id)) focusStep={id,k:(steps.find(([k])=>!pr.steps[k])||steps[0])[0]};
+  const show=k=>!focus||focusStep.k===k;
+  const head=(k,title)=>`<div class="sec-head"><h3>${title}</h3><label class="sec-done"><input type="checkbox" data-done="${k}" ${pr.steps[k]?"checked":""}> Done</label></div>`;
+  const sec={
+    watch:()=>`<div class="card" data-sec="watch">${head("watch","Watch")}<p class="muted small" style="margin:0 0 12px">Captions are on. Nothing plays until you tap it. Pause anytime.</p>${vids.map(videoBlock).join('<div style="height:18px"></div>')}</div>`,
+    key:()=>`<div class="card" data-sec="key">${head("key","The idea in three lines")}<ul class="keylist">${(KEYS[id]||[]).map((k,n)=>`<li><b>${n+1}</b>${esc(k)}</li>`).join("")}</ul></div>`,
+    read:()=>`<div class="card lesson-body" data-sec="read">${head("read","Read")}${l.body}${!vids.length?`<p class="muted small">No video for this one. These rules are set district by district, so the best source is each district's own page. Links are at the bottom.</p>`:""}</div>`,
+    try:()=>`<div class="card" data-sec="try">${head("try","Try it")}<div id="tool"></div></div>`,
+    do:()=>`<div class="card" data-sec="do">${head("do","Do it for real")}<p>${esc(l.drill)}</p><textarea id="drillTxt" placeholder="Your answer">${esc(S.drills[id]||"")}</textarea><div class="row" style="margin-top:10px"><span class="spacer"></span><button class="btn primary" id="drSave">Save</button></div></div>`,
+    blue:()=>`<div class="card" data-sec="blue">${head("blue","Practice with Blue")}<p class="muted small" style="margin:0 0 10px">Blue plays a client, and her feedback is about this lesson's skill.</p><div class="row"><button class="btn primary" id="lBlueRP">Role-play this lesson</button><button class="btn" id="lBlueM">Talk it through</button></div></div>`
+  };
+  const fi=steps.findIndex(([k])=>focus&&focusStep.k===k);
+  m.innerHTML=`<div class="row" style="margin-bottom:10px"><a href="#learn" class="muted">← All lessons</a><span class="spacer"></span><label class="sec-done" style="font-size:13px"><input type="checkbox" id="oneStep" ${focus?"checked":""}> One step at a time</label></div>
+  <h1>${esc(l.title)}</h1><p class="page-sub">Lesson ${i+1} of ${LESSONS.length} · ${esc(l.source)}</p>
+  <div class="steps">${steps.map(([k,n])=>`<span class="step ${pr.steps[k]?"done":""} ${focus&&focusStep.k===k?"cur":""}" data-go="${k}"><span class="ck">${pr.steps[k]?"✓":""}</span>${n}</span>`).join("")}</div>
+  ${steps.filter(([k])=>show(k)).map(([k])=>sec[k]()).join("")}
+  ${focus?`<div class="focus-nav">${fi>0?`<button class="btn" id="fBack">← ${steps[fi-1][1]}</button>`:"<span></span>"}${fi<steps.length-1?`<button class="btn primary" id="fNext">${steps[fi+1][1]} →</button>`:`<a class="btn primary" href="${next?"#lesson-"+next.id:"#learn"}">${next?"Next lesson →":"Back to lessons"}</a>`}</div>`:""}
+  ${!focus&&l.lib&&l.lib.length?`<div class="card"><h3>Read the source</h3>${libLinks(l.lib)}<p class="small" style="margin:8px 0 0"><a href="#library">All sources in the Library</a></p></div>`:""}
+  ${focus&&fi===steps.length-1&&l.lib&&l.lib.length?`<div class="card" style="margin-top:16px"><h3>Read the source</h3>${libLinks(l.lib)}</div>`:""}
+  ${!focus?`<div class="row">${prev?`<a class="btn" href="#lesson-${prev.id}">← ${esc(prev.title)}</a>`:""}<span class="spacer"></span>${next?`<a class="btn" href="#lesson-${next.id}">${esc(next.title)} →</a>`:""}</div>`:""}`;
+  $("#oneStep").onchange=e=>{S.settings.oneStep=e.target.checked; focusStep=null; save(); render();};
+  m.querySelectorAll("[data-done]").forEach(c=>c.onchange=()=>{markStep(id,c.dataset.done,c.checked); if(c.checked&&focus){ const j=steps.findIndex(([k])=>k===c.dataset.done); if(j<steps.length-1) focusStep.k=steps[j+1][0]; } render();});
+  m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(focus){focusStep.k=b.dataset.go; render();} else { const el=m.querySelector(`[data-sec="${b.dataset.go}"]`); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); } });
+  const fb=$("#fBack"); if(fb) fb.onclick=()=>{focusStep.k=steps[fi-1][0]; render(); window.scrollTo(0,0);};
+  const fn=$("#fNext"); if(fn) fn.onclick=()=>{focusStep.k=steps[fi+1][0]; lessonProg(id).at=focusStep.k; save(); render(); window.scrollTo(0,0);};
+  const ds=$("#drSave"); if(ds) ds.onclick=()=>{saveDrill(id,true); if(S.drills[id]) markStep(id,"do",true); toast("Saved"); render();};
+  const rp=$("#lBlueRP"); if(rp) rp.onclick=()=>{saveDrill(id,true); markStep(id,"blue",true); blueCtx={lesson:id}; blueMode="roleplay"; blueMsgs=[]; location.hash="#blue";};
+  const bm=$("#lBlueM"); if(bm) bm.onclick=()=>{saveDrill(id,true); markStep(id,"blue",true); blueCtx={lesson:id}; blueMode="mentor"; blueMsgs=[]; location.hash="#blue";};
+  const tool=$("#tool"); if(tool) (TOOLS[id]||(()=>{}))(tool);
+  wireVideos(m);
 }
 function saveDrill(id,quiet){
   const t=$("#drillTxt"); if(!t) return; S.drills[id]=t.value;
